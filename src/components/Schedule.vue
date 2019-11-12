@@ -6,8 +6,8 @@
     class="elevation-1"
   >
     <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>MANAGE DENTAL SERVICES</v-toolbar-title>
+      <v-toolbar flat color="white" class="ma-4 pa-5">
+        <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -19,20 +19,20 @@
             <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
           </template>
           <v-card>
-            <v-card-title>
+            <v-card-title class="blue white--text">
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
-
+        
             <v-card-text>
               <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Service Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.time" label="Estimated Time (minutes)"></v-text-field>
-                  </v-col>
-                </v-row>
+                 <v-form
+                    ref="form"
+                    v-model="valid"
+                    lazy-validation
+                  >
+                    <v-text-field v-model="editedItem.name" label="Service Name" required></v-text-field>
+                    <v-text-field v-model="editedItem.time" label="Estimated Time (minutes)" type="number" required></v-text-field>
+                 </v-form>
               </v-container>
             </v-card-text>
 
@@ -67,109 +67,110 @@
 </template>
 
 <script>
-  export default {
-    name: 'schedules',
-    data: () => ({
-      dialog: false,
-      headers: [
+export default {
+  name: "schedules",
+  data: () => ({
+    dialog: false,
+    headers: [
+      {
+        text: "Services",
+        align: "left",
+        sortable: false,
+        value: "name"
+      },
+      { text: "Estimated Time (min)", value: "time" },
+      { text: "Actions", value: "action", sortable: false }
+    ],
+    services: [],
+    editedIndex: -1,
+    editedItem: {
+      name: "",
+      time: "" 
+    },
+    defaultItem: {
+      name: "",
+      time: ""
+    }
+  }),
+
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "Add Service" : "Edit Service";
+    }
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    }
+  },
+
+  created() {
+    this.initialize();
+  },
+
+  methods: {
+    initialize() {
+      this.services = [
         {
-          text: 'Services',
-          align: 'left',
-          sortable: false,
-          value: 'name',
+          name: "Extration",
+          time: 45
         },
-        { text: 'Estimated Time (min)', value: 'time' },
-        { text: 'Actions', value: 'action', sortable: false },
-      ],
-      services: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        time: 0,
-      },
-      defaultItem: {
-        name: '',
-        time: 0,
-      },
-    }),
-
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
-
-    methods: {
-      initialize () {
-        this.services = [
-          {
-            name: 'Extration',
-            time: 45
-          },
-          {
-            name: 'Dental Cleaning',
-            time: 30
-          },
-          {
-            name: 'Cosmetic dentistry',
-            time: 25
-          },
-          {
-            name: 'x-rays',
-            time: 30
-          },
-          {
-            name: 'root canals',
-            time: 25
-          },
-          {
-            name: 'Fillings',
-            time: 45
-          },
-          {
-            name: 'Implants',
-            time: 20
-          },
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.services.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.services.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.services.splice(index, 1)
-      },
-
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.services[this.editedIndex], this.editedItem)
-        } else {
-          this.services.push(this.editedItem)
+        {
+          name: "Dental Cleaning",
+          time: 30
+        },
+        {
+          name: "Cosmetic dentistry",
+          time: 25
+        },
+        {
+          name: "x-rays",
+          time: 30
+        },
+        {
+          name: "root canals",
+          time: 25
+        },
+        {
+          name: "Fillings",
+          time: 45
+        },
+        {
+          name: "Implants",
+          time: 20
         }
-        this.close()
-      },
+      ];
     },
+
+    editItem(item) {
+      this.editedIndex = this.services.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      const index = this.services.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.services.splice(index, 1);
+    },
+
+    close() {
+      this.dialog = false;
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.services[this.editedIndex], this.editedItem);
+      } else {
+        this.services.push(this.editedItem);
+      }
+      this.close();
+    }
   }
+};
 </script>

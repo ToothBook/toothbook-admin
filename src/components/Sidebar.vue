@@ -1,6 +1,6 @@
 
 <template>
-  <v-card hover height="500" width="200">
+  <v-card hover fixed width="200">
     <v-navigation-drawer
       absolute
       src="https://t4.ftcdn.net/jpg/02/91/29/11/240_F_291291138_nN2lKbL798fhCGFzLcpgHa1kVy1xvh3Y.jpg"
