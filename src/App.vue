@@ -1,18 +1,20 @@
 <template>
   <v-app>
-    
-    <v-content>
+     <v-row>
+    <Sidebar/>
+    <v-content class="mx-4 mb-4">
           <router-view/>
     </v-content>
+     </v-row>
   </v-app>
 </template>
 
 <script>
-// import Home from './views/Home.vue'
+import Sidebar from "@/components/Sidebar"
 export default {
   name: "App",
   components: {
-    
+    Sidebar
   }
 };
 </script>

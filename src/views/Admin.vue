@@ -1,21 +1,21 @@
 <template>
     <div class="admin">
-        <v-row>
-            <Sidebar />
-            <div>test</div>
+        
+            <!-- <Sidebar /> -->
+            <div>Admin</div>
             <div>
                 <router-view></router-view>
             </div>
-        </v-row>
+        
     </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
+// import Sidebar from "../components/Sidebar.vue";
 export default {
   name: "admin",
   components: {
-    Sidebar
+    // Sidebar
   }
 };
 </script>
