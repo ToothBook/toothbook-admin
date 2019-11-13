@@ -6,7 +6,7 @@
     class="elevation-1"
   >
     <template v-slot:top>
-      <v-toolbar flat color="white" class="ma-4 pa-5">
+      <v-toolbar flat color="white" class="ma-4 mb-12 pa-5"  >
         <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
         <v-divider
           class="mx-4"
@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+            <v-btn color="light-blue lighten-1" dark class="mb-2" v-on="on">New Item</v-btn>
           </template>
           <v-card>
             <v-card-title class="blue white--text">
@@ -25,13 +25,13 @@
         
             <v-card-text>
               <v-container>
-                 <v-form
+                 <v-form class="mt-10"
                     ref="form"
                     v-model="valid"
                     lazy-validation
                   >
-                    <v-text-field v-model="editedItem.name" label="Service Name" required></v-text-field>
-                    <v-text-field v-model="editedItem.time" label="Estimated Time (minutes)" type="number" required></v-text-field>
+                    <v-text-field v-model="editedItem.name" outlined dense  label="Service Name" required></v-text-field>
+                    <v-text-field v-model="editedItem.time" outlined dense label="Estimated Time (minutes)" type="number" required></v-text-field>
                  </v-form>
               </v-container>
             </v-card-text>
@@ -39,7 +39,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn color="blue darken-1" text :disabled="!valid" @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -71,6 +71,10 @@ export default {
   name: "schedules",
   data: () => ({
     dialog: false,
+    valid: false,
+      inputRules: [
+        v => !!v || 'Input is required'
+      ],
     headers: [
       {
         text: "Services",
