@@ -3,14 +3,20 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Admin from '../views/Admin.vue'
 import Services from '../components/Schedule.vue'
+import Login from '../views/Login.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
-    {
+      {
         path: '/',
-        name: 'home',
+        name: 'Login',
+        component: Login
+      },
+    {
+        path: '/Home',
+        name: 'Home',
         component: Home
     },
     {
