@@ -10,9 +10,6 @@
       <v-toolbar-title>TOOTHBOOK</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -64,7 +61,7 @@
         cols="12"
         :to="'/admin'"
       >
-        <v-btn icon>
+        <v-btn v-on:click="logout()" icon>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
         <strong>Logout</strong>
@@ -103,6 +100,13 @@ export default {
     group() {
       this.drawer = false;
     }
-  }
+  },
+  methods: {
+    logout() {
+    
+        this.$router.push({name: 'Login'})
+      
+    }
+  },
 };
 </script>

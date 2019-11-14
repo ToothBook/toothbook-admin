@@ -68,7 +68,7 @@
   methods: {
     login() {
       if(this.username == "admin" && this.password == "admin"){
-        this.$router.push({name: 'Home'})
+        this.$router.push({name: 'Dashboard'})
       }else{
         alert("Invalid credentials")
       }
