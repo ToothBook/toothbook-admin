@@ -61,7 +61,7 @@
         cols="12"
         :to="'/admin'"
       >
-        <v-btn v-on:click="logout()" icon>
+        <v-btn @click="logout()" icon>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
         <strong>Logout</strong>
@@ -103,9 +103,10 @@ export default {
   },
   methods: {
     logout() {
-    
-        this.$router.push({name: 'Login'})
-      
+        sessionStorage.removeItem("authenticated")
+        this.$router.go({ name: 'Login' }).catch(err => {
+      console.log(err)
+      })
     }
   },
 };

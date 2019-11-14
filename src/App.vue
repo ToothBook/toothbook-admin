@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Header v-if="$route.name!= 'Login'" />
-    <v-content>
+    <v-content  class="mx-4 mb-4">
       <router-view />
     </v-content>
   </v-app>

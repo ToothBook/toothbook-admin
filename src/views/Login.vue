@@ -1,23 +1,17 @@
 <template>
-<div> 
+<!-- <div>  -->
       <v-container
         class="fill-height"
         fluid
       >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card class="elevation-12">
+        <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md4 lg6>
+                <v-card class="elevation-12">
               <v-toolbar
-                color="primary"
                 dark
                 flat
+                prominent
+                src="https://www.joliet-dentist.com/images/placeholder/background-1.png"
               >
                 <v-toolbar-title>Login form</v-toolbar-title>
                 <v-spacer />
@@ -47,13 +41,13 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-               <v-btn v-on:click="login()" color="primary">Login</v-btn>
+               <v-btn class="px-10" rounded dark v-on:click="login()" color="light-blue lighten-1">Login</v-btn>
               </v-card-actions>
             </v-card>
-          </v-col>
-        </v-row>
+            </v-flex>
+        </v-layout>
       </v-container>
-      </div>
+      <!-- </div> -->
 </template>
 
 <script>
@@ -68,7 +62,10 @@
   methods: {
     login() {
       if(this.username == "admin" && this.password == "admin"){
-        this.$router.push({name: 'Dashboard'})
+        sessionStorage.setItem('authenticated', true);
+        this.$store.commit("setAuthentication", true);
+        this.$router.push({name: 'Dashboard'
+        })
       }else{
         alert("Invalid credentials")
       }

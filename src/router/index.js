@@ -4,6 +4,7 @@ import Admin from '../views/Admin.vue'
 import Services from '../components/Schedule.vue'
 import Login from '../views/Login.vue'
 import Client from '../views/Clients.vue'
+import store from "../store"
 // import { isNullOrUndefined } from 'util'
 
 Vue.use(VueRouter)
@@ -18,41 +19,55 @@ const router = new VueRouter({
             path: '/login',
             name: 'Login',
             component: Login,
-            meta: {
-                tokenRequired: true
-            }
+            beforeEnter: (to, from, next) => {
+                if (store.state.authenticated == true) {
+                    next("/admin");
+                } else {
+                    next();
+                }
+    
+            },
         },
         {
             path: "/",
             redirect: {
                 path: "/admin"
             },
-            meta: {
-                tokenRequired: false
-            }
         },
         {
             path: '/admin',
             name: 'Dashboard',
             component: Admin,
-            meta: {
-                tokenRequired: false
+            beforeEnter: (to, from, next) => {
+                if (store.state.authenticated == false) {
+                    next("/login");
+                } else {
+                    next();
+                }
             }
         },
         {
             path: '/services',
             name: 'services',
             component: Services,
-            meta: {
-                tokenRequired: false
+            beforeEnter: (to, from, next) => {
+                if (store.state.authenticated == false) {
+                    next("/login");
+                } else {
+                    next();
+                }
             }
         },
         {
             path: '/clients',
             name: 'Clients',
             component: Client,
-            meta: {
-                tokenRequired: false
+            beforeEnter: (to, from, next) => {
+                if (store.state.authenticated == false) {
+                    next("/login");
+                } else {
+                    next();
+                }
             }
         },
         {
