@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Admin from '../views/Admin.vue'
 import Services from '../components/Schedule.vue'
+import ClientForm from '../components/ClientForm.vue'
 import Login from '../views/Login.vue'
 import Client from '../views/Clients.vue'
 import store from "../store"
@@ -62,6 +63,18 @@ const router = new VueRouter({
             path: '/clients',
             name: 'Clients',
             component: Client,
+            beforeEnter: (to, from, next) => {
+                if (store.state.authenticated == false) {
+                    next("/login");
+                } else {
+                    next();
+                }
+            }
+        },
+        {
+            path: '/clients-form',
+            name: 'ClientsForm',
+            component: ClientForm,
             beforeEnter: (to, from, next) => {
                 if (store.state.authenticated == false) {
                     next("/login");

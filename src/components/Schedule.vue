@@ -1,180 +1,168 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="services"
-    sort-by="time"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white" class="ma-4 mb-12 pa-5"  >
-        <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="light-blue lighten-1" dark class="mb-2" v-on="on">New Item</v-btn>
-          </template>
-          <v-card>
-            <v-card-title class="blue white--text">
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-        
-            <v-card-text>
-              <v-container>
-                 <v-form class="mt-10"
-                    ref="form"
-                    v-model="valid"
-                    lazy-validation
-                  >
-                    <v-text-field v-model="editedItem.name" outlined dense  label="Service Name" required></v-text-field>
-                    <v-text-field v-model="editedItem.time" outlined dense label="Estimated Time (minutes)" type="number" required></v-text-field>
-                 </v-form>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text :disabled="!valid" @click="save">Save</v-btn>
+    <v-data-table
+        :headers="headers"
+        :items="services" 
+        sort-by="name" 
+        class="elevation-5">
+        <template v-slot:top>
+          <v-toolbar flat color="white" class="ma-4 mb-12 pa-5"  >
+            <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="500px">
+                <template v-slot:activator="{ on }">
+                    <v-btn color="light-blue lighten-1" dark class="mb-2" v-on="on">New Item</v-btn>
+                </template>
+            <v-card>
+                <v-card-title class="blue white--text">
+                <span class="headline">{{ formTitle }}</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-form class="mt-10"
+                            ref="form"
+                            v-model="valid"
+                        
+                            lazy-validation
+                        >  <v-text-field v-model="name" :rules="inputRules" outlined dense  label="Service Name" required></v-text-field>
+                            <v-text-field v-model="time" :rules="inputRules" outlined dense label="Estimated Time (minutes)" type="number" required></v-text-field>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text :disabled="!valid" @click="formAction()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.action="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
+<template v-slot:item.action="{ item }">
+    <v-icon small class="mr-2" @click="editItem(item)">
         edit
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
+    </v-icon>
+    <v-icon small @click="deleteService(item)">
         delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
+    </v-icon>
+</template>
   </v-data-table>
 </template>
 
 <script>
+import { createService, getServices, deleteService, updateService } from "../helpers/actions";
 export default {
-  name: "schedules",
-  data: () => ({
-    dialog: false,
-    valid: false,
-      inputRules: [
-        v => !!v || 'Input is required'
-      ],
-    headers: [
-      {
-        text: "Services",
-        align: "left",
-        sortable: false,
-        value: "name"
-      },
-      { text: "Estimated Time (min)", value: "time" },
-      { text: "Actions", value: "action", sortable: false }
-    ],
-    services: [],
-    editedIndex: -1,
-    editedItem: {
-      name: "",
-      time: "" 
+    name: "schedules",
+    // props:['service'],
+    data: () => ({
+        name: '',
+        time: 0,
+        getQuery: '',
+        services: [],
+        service_id: 0,
+        dialog: false,
+        valid: false,
+        inputRules: [
+            v => !!v || 'Input is required'
+        ],
+        headers: [{
+                text: "Services",
+                align: "left",
+                value: "name"
+            },
+            { text: "Estimated Time (min)", value: "time" },
+            { text: "Actions", value: "action", sortable: false }
+        ],
+        add: true,
+        editedIndex: -1,
+    }),
+
+    computed: {
+        formTitle() {
+            return this.add == true ? "Add Service" : "Edit Service";
+        },
     },
-    defaultItem: {
-      name: "",
-      time: ""
-    }
-  }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "Add Service" : "Edit Service";
-    }
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    }
-  },
-
-  created() {
-    this.initialize();
-  },
-
-  methods: {
-    initialize() {
-      this.services = [
-        {
-          name: "Extration",
-          time: 45
-        },
-        {
-          name: "Dental Cleaning",
-          time: 30
-        },
-        {
-          name: "Cosmetic dentistry",
-          time: 25
-        },
-        {
-          name: "x-rays",
-          time: 30
-        },
-        {
-          name: "root canals",
-          time: 25
-        },
-        {
-          name: "Fillings",
-          time: 45
-        },
-        {
-          name: "Implants",
-          time: 20
+    watch: {
+        dialog(val) {
+            val || this.close();
         }
-      ];
     },
 
-    editItem(item) {
-      this.editedIndex = this.services.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    methods: {
+        editItem(item) {
+            this.add = false;
+            this.name = item.name;
+            this.time = item.time;
+            this.service_id = item._id;
+            this.dialog = true;
+        },
+
+        close() {
+            this.dialog = false;
+            setTimeout(() => {
+                this.add = true
+                this.editedIndex = -1;
+            }, 300);
+            this.name = "";
+            this.time = 0;
+            this.retrieveServices()
+        },
+
+        formAction() {
+            if( this.add === true){
+              this.create() 
+            }else{
+              this.update()
+            }
+        },
+
+        create() {
+            let data = { name: this.name, time: this.time }
+            createService(data)
+                .then(data => {
+                    this.$emit('createService', data.data);
+                    console.log(data.data)
+                    this.close()
+                })
+                .catch(err => alert(err.error))
+        },
+
+        deleteService(item) {
+            const index = this.services.indexOf(item);
+            const service = this.services[index];
+            console.log(service)
+            deleteService(service._id)
+                .then(() => this.$emit('deleteService', service._id))
+                .catch(err => alert(err))
+            this.retrieveServices()
+        },
+
+        update() {
+            let data = { name: this.name, time: this.time };
+            updateService(data, this.service_id)
+                .then(data => {
+                    this.$emit('updateService', data.data)
+                    console.log(data.data)
+                    this.close()
+                })
+                .catch(err => alert(err.error));
+        },
+        retrieveServices(){
+            getServices()
+            .then(data => this.services = data.data)
+            .catch(err => alert(err))
+        }
     },
 
-    deleteItem(item) {
-      const index = this.services.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.services.splice(index, 1);
-    },
-
-    close() {
-      this.dialog = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.services[this.editedIndex], this.editedItem);
-      } else {
-        this.services.push(this.editedItem);
-      }
-      this.close();
+    mounted() {
+        getServices()
+            .then(data => (this.services = data.data))
+            .catch(err => alert(err))
     }
-  }
 };
 </script>

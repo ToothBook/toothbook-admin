@@ -23,7 +23,7 @@
     <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://icon-library.net/images/user-image-icon/user-image-icon-18.jpg" />
+            <img src="../assets/icon.jpg" />
           </v-list-item-avatar>
 
           <v-list-item-content>

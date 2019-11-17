@@ -1,5 +1,4 @@
 <template>
-
   <v-data-table
     :headers="headers"
     :items="clients"
@@ -7,7 +6,7 @@
     :expanded.sync="expanded"
     item-key="firstname"
     show-expand
-    class="elevation-1"
+    class="elevation-5"
   >
     <template v-slot:top>
       <v-toolbar flat class="ma-5 mb-12 pa-5">

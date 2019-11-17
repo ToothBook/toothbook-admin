@@ -11,9 +11,9 @@
                 dark
                 flat
                 prominent
-                src="https://www.joliet-dentist.com/images/placeholder/background-1.png"
+                src="../assets/background.png"
               >
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>ToothBook Login</v-toolbar-title>
                 <v-spacer />
               </v-toolbar>
               <v-card-text>
