@@ -19,7 +19,7 @@
     <template v-slot:item.action="{ item }">
       <v-icon
         small
-        @click="deleteItem(item)"
+        @click="deleteAppointment(item)"
       >
         mdi-delete
       </v-icon>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import {getAppointments , deleteAppointment} from "../helpers/actions";
+
   export default {
     name:"Clients",
     data () {
@@ -48,76 +50,31 @@
           { text: 'Contact Number', value: 'contact' },
           { text: "Actions", value: "action", sortable: false }
         ],
-        clients: [
-          {
-            firstname: 'Mary Grace',
-            lastname: 'Tiburillo',
-            email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Geneva',
-            lastname: 'Rivas',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Ivy Joy',
-            lastname: 'Devilleres',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Jessa',
-            lastname: 'Jalandoni',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Jessa Mae',
-            lastname: 'Yosores',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Redgie',
-            lastname: 'Gravador',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Ma. Theresa',
-            lastname: 'Amaquin',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Hannah Mae',
-            lastname: 'Pelino',
-             email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-          {
-            firstname: 'Yubert',
-            lastname: 'Mariscal',
-             email: 'sample@gmail.com',
-           contact: '09123557841',
-          },
-          {
-            firstname: 'Jonathan',
-            lastname: 'Rivas',
-            email: 'sample@gmail.com',
-            contact: '09123557841',
-          },
-        ],
+        clients: [],
       }
     },
     methods:{
-    deleteItem(item) {
-      const index = this.clients.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.clients.splice(index, 1);
-    },
-    }
+    deleteAppointment(item) {
+            const index = this.clients.indexOf(item);
+            const client = this.clients[index];
+            console.log(client)
+            deleteAppointment(client._id)
+                .then(() => this.$emit('deleteAppointment', client._id))
+                .catch(err => alert(err))
+            this.retrieveAppointments()
+        },
+
+    retrieveAppointments(){
+      getAppointments()
+            .then(data => (this.clients = data.data , console.log(data.data)))
+            .catch(err => alert(err))
+       }
+    
+  },
+  mounted() {
+    getAppointments()
+      .then(data => (this.clients = data.data , console.log(data.data)))
+      .catch(err => alert(err))
+  }
   }
 </script>

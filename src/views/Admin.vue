@@ -18,22 +18,32 @@
     <template v-slot:item.action="{ item }">
       <v-icon
         small
-        @click="deleteItem(item)"
+        @click="deleteAppointment(item)"
       >
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:expanded-item="{ headers }">
-      <td :colspan="headers.length">Notes from the clients here</td>
+    <template v-slot:item.status="{ item }">
+      <v-checkbox class="black--text"
+              color="success"
+              value="success"
+              hide-details
+            ><div slot="label" class="error--text">{{status}}</div></v-checkbox>
+    </template>
+    <template v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length">{{item.note}}</td>
     </template>
   </v-data-table>
 </template>
 <script>
+import {getAppointments , deleteAppointment} from "../helpers/actions";
 export default {
   name: "Dashboard",
   data() {
     return {
+      status:'On Queue',
       expanded: [],
+      clients:[],
       singleExpand: false,
       headers: [
         {
@@ -45,74 +55,52 @@ export default {
           text: "Lastname",
           value: "lastname"
         },
+        { text: "Requested Dental Service", value: "reason" },
         { text: "Email Address", value: "email" },
         { text: "Contact Number", value: "contact" },
+        { text: "Status", value: "status" },
         { text: "Actions", value: "action", sortable: false },
         { text: '', value: 'data-table-expand' },
       ],
-      clients: [
+      client: [
         {
           firstname: "Mary Grace",
           lastname: "Tiburillo",
+          service: "Dental Cleaning",
           email: "sample@gmail.com",
-          contact: "09123557841"
+          contact: "09123557841",
+          status: 1,
         },
-        {
-          firstname: "Geneva",
-          lastname: "Rivas",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Ivy Joy",
-          lastname: "Devilleres",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Jessa",
-          lastname: "Jalandoni",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Jessa Mae",
-          lastname: "Yosores",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Redgie",
-          lastname: "Gravador",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Ma. Theresa",
-          lastname: "Amaquin",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Hannah Mae",
-          lastname: "Pelino",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Yubert",
-          lastname: "Mariscal",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        },
-        {
-          firstname: "Jonathan",
-          lastname: "Rivas",
-          email: "sample@gmail.com",
-          contact: "09123557841"
-        }
-      ]
+      ],
     };
+  },
+  methods:{
+    deleteAppointment(item) {
+            const index = this.clients.indexOf(item);
+            const client = this.clients[index];
+            console.log(client)
+            deleteAppointment(client._id)
+                .then(() => this.$emit('deleteAppointment', client._id))
+                .catch(err => alert(err))
+            this.retrieveAppointments()
+        },
+
+    retrieveAppointments(){
+      getAppointments()
+            .then(data => (this.clients = data.data , console.log(data.data)))
+            .catch(err => alert(err))
+       }
+    
+  },
+  mounted() {
+    getAppointments()
+      .then(data => (this.clients = data.data , console.log(data.data)))
+      .catch(err => alert(err))
   }
 };
 </script>
+<style scoped>
+.black--text label {
+    color: black;
+}
+</style>

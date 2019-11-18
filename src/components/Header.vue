@@ -55,6 +55,7 @@
       <v-footer
       absolute
       class="font-weight-medium"
+      inset app
     >
       <v-col
         class="text-left"
@@ -71,7 +72,8 @@
     <v-footer
       absolute
       dense
-      class="font-weight-medium"
+      class="font-weight-medium mt-10"
+      
     >
       <v-col
         class="text-center"

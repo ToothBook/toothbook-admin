@@ -75,13 +75,13 @@ const router = new VueRouter({
             path: '/clients-form',
             name: 'ClientsForm',
             component: ClientForm,
-            beforeEnter: (to, from, next) => {
-                if (store.state.authenticated == false) {
-                    next("/login");
-                } else {
-                    next();
-                }
-            }
+            // beforeEnter: (to, from, next) => {
+            //     if (store.state.authenticated == false) {
+            //         next("/login");
+            //     } else {
+            //         next();
+            //     }
+            // }
         },
         {
             path: "*",

@@ -62,6 +62,7 @@ app.get('/api/appointment/list', (req, res) => {
 })
 
 app.post('/api/appointment/create', (req, res) => {
+    console.log(req.body)
     const data = new Appointment({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -93,7 +94,7 @@ app.post('/api/appointment/delete/:id', (req, res) => {
 })
 
 
-const PORT = 5000;
+const PORT = 3000;
 
 app.listen(PORT)
 console.log('api running on port: ' + PORT)

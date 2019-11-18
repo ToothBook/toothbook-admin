@@ -108,8 +108,8 @@ export default {
                 this.add = true
                 this.editedIndex = -1;
             }, 300);
-            this.name = "";
-            this.time = 0;
+            this.name = null;
+            this.time = null;
             this.retrieveServices()
         },
 
