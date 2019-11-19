@@ -5,7 +5,7 @@
         fluid
       >
         <v-layout align-center justify-center>
-            <v-flex xs12 sm8 md4 lg6>
+            <v-flex xs12 sm8 md4>
                 <v-card class="elevation-12">
               <v-toolbar
                 dark

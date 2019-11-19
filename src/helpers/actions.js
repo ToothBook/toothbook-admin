@@ -66,3 +66,31 @@ export function updateAppointment(data, id){
     })
     .catch(err=> Promise.reject(err.message))
 }
+
+//Admin - Account
+export function getAccount() {
+    return axios.get(`${BASE_URL}/api/account/retrieve`)
+        .then(response => response.data)
+}
+
+export function deleteAccount(id) {
+    return axios.post(`${BASE_URL}/api/account/delete/${id}`)
+        .then(response => response.data)
+        .catch(err => Promise.reject(err.message));
+}
+
+export function createAccount(data) {
+    return axios.post(`${BASE_URL}/api/account/create`, { username: data.username, password: data.password })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}
+
+export function updateAccount(data, id) {
+    return axios.post(`${BASE_URL}/api/account/update/${id}`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}

@@ -6,7 +6,7 @@
     :expanded.sync="expanded"
     item-key="firstname"
     show-expand
-    class="elevation-5"
+    class="elevation-5 ma-5"
   >
     <template v-slot:top>
       <v-toolbar flat class="ma-5 mb-12 pa-5">
@@ -26,9 +26,9 @@
     <template v-slot:item.status="{ item }">
       <v-checkbox class="black--text"
               color="success"
-              value="success"
               hide-details
-            ><div slot="label" class="error--text">{{status}}</div></v-checkbox>
+              :label="item.status"
+            />
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">{{item.note}}</td>
@@ -42,6 +42,7 @@ export default {
   data() {
     return {
       status:'On Queue',
+      check: false,
       expanded: [],
       clients:[],
       singleExpand: false,
@@ -62,16 +63,6 @@ export default {
         { text: "Actions", value: "action", sortable: false },
         { text: '', value: 'data-table-expand' },
       ],
-      client: [
-        {
-          firstname: "Mary Grace",
-          lastname: "Tiburillo",
-          service: "Dental Cleaning",
-          email: "sample@gmail.com",
-          contact: "09123557841",
-          status: 1,
-        },
-      ],
     };
   },
   methods:{
@@ -89,8 +80,7 @@ export default {
       getAppointments()
             .then(data => (this.clients = data.data , console.log(data.data)))
             .catch(err => alert(err))
-       }
-    
+       },
   },
   mounted() {
     getAppointments()

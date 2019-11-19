@@ -117,7 +117,7 @@ import { createAppointment, getServices } from "../helpers/actions";
   export default {
     name: "clientform",
     data: () => ({
-      status: 1,
+      status: 'On Queue',
       valid: true,
       firstname: '',
       lastname:'',

@@ -10,7 +10,7 @@ const AppointmentSchema = Schema(
         date: {type: Date, required: true},
         reason: {type: String, required: true},
         note: {type: String, required: true},
-        status: {type: Number, required: true},
+        status: {type: String, required: true},
     }, 
 );
 

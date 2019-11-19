@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 //models
 const Service = require('./Services');
 const Appointment = require('./Appointment');
+const AdminAccnt = require('./AdminAccount')
 
 //database - mongoose
 mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
@@ -32,7 +33,7 @@ app.post('/api/service/create', (req, res) => {
     console.log(req.body)
     const data = new Service({ name: req.body.name, time: req.body.time });
     data.save((err) => {
-        if (err) return res.status(404).send({ message: err.message });
+        if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
     });
 });
@@ -88,6 +89,41 @@ app.post('/api/appointment/update/:id', (req, res) => {
 
 app.post('/api/appointment/delete/:id', (req, res) => {
     Appointment.findByIdAndRemove(req.params.id, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully deleted!', data })
+    })
+})
+
+//Admin - Account
+app.get('/api/account/retrieve', (req, res) => {
+    AdminAccnt.find({}, (err, data) => {
+        if (err) {
+            return res.status(404).send('Error while getting list of services!');
+        }
+        return res.send({ data })
+    })
+})
+
+app.post('/api/account/create', (req, res) => {
+    console.log(req.body)
+    const data = new AdminAccnt({ username: req.body.username, password: req.body.password });
+    data.save((err) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ data });
+    });
+});
+
+app.post('/api/account/update/:id', (req, res) => {
+    console.log(req.body)
+    AdminAccnt.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+        
+    })
+})
+
+app.post('/api/account/delete/:id', (req, res) => {
+    AdminAccnt.findByIdAndRemove(req.params.id, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully deleted!', data })
     })
