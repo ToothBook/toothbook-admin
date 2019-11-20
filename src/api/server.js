@@ -73,6 +73,7 @@ app.post('/api/appointment/create', (req, res) => {
         reason: req.body.reason,
         note: req.body.note,
         status: req.body.status,
+        check: req.body.check
     });
     data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });
@@ -81,7 +82,7 @@ app.post('/api/appointment/create', (req, res) => {
 });
 
 app.post('/api/appointment/update/:id', (req, res) => {
-    Appointment.findByIdAndUpdate(req.params.id, req.body.status, { new: true }, (err, data) => {
+    Appointment.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
     })

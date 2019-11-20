@@ -25,9 +25,11 @@
     </template>
     <template v-slot:item.status="{ item }">
       <v-checkbox class="black--text"
+              v-model="item.check"
               color="success"
               hide-details
               :label="item.status"
+              @change="check(item)"
             />
     </template>
     <template v-slot:expanded-item="{ headers, item }">
@@ -36,13 +38,13 @@
   </v-data-table>
 </template>
 <script>
-import {getAppointments , deleteAppointment} from "../helpers/actions";
+import {getAppointments , deleteAppointment, updateAppointment} from "../helpers/actions";
 export default {
   name: "Dashboard",
   data() {
     return {
-      status:'On Queue',
-      check: false,
+      // status:'On Queue',
+      checked: false,
       expanded: [],
       clients:[],
       singleExpand: false,
@@ -59,7 +61,7 @@ export default {
         { text: "Requested Dental Service", value: "reason" },
         { text: "Email Address", value: "email" },
         { text: "Contact Number", value: "contact" },
-        { text: "Status", value: "status" },
+        { text: "Status", value: "status", sortable: false },
         { text: "Actions", value: "action", sortable: false },
         { text: '', value: 'data-table-expand' },
       ],
@@ -81,10 +83,32 @@ export default {
             .then(data => (this.clients = data.data , console.log(data.data)))
             .catch(err => alert(err))
        },
+
+       check(item){
+            const index = this.clients.indexOf(item);
+            const client = this.clients[index];
+            if (client.check == false) {
+              // client.check = false;
+              client.status= "On Queue";
+            } else {
+              // client.check = true;
+              client.status="Done";
+            }
+            const data = {status: client.status, check: client.check}
+            updateAppointment(data, client._id)
+              .then(data => {
+                    this.$emit('updateService', data.data)
+                    console.log(data.data)
+                    // Object.assign(this.clients[this.editedIndex], data.data)
+                    // this.close()
+                })
+                .catch(err => alert(err.error));
+       }
   },
   mounted() {
     getAppointments()
       .then(data => (this.clients = data.data , console.log(data.data)))
+      
       .catch(err => alert(err))
   }
 };

@@ -11,6 +11,7 @@ const AppointmentSchema = Schema(
         reason: {type: String, required: true},
         note: {type: String, required: true},
         status: {type: String, required: true},
+        check: {type: Boolean, required: true}
     }, 
 );
 

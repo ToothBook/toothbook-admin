@@ -17,13 +17,13 @@
       absolute
       top
       temporary
-      height="500"
+      fit-height
       left
     >
     <template v-slot:prepend>
         <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="../assets/icon.jpg" />
+          <v-list-item-avatar tile right size="62">
+            <img src="../assets/toothbook-logo5.png" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -33,7 +33,7 @@
         </v-list-item>
       </template>
       <v-divider></v-divider>
-      <v-list nav dense>
+      <v-list nav >
         <v-list-item-group
           v-model="group"
           active-class="light-blue--text text--accent-4"
@@ -57,16 +57,24 @@
       class="font-weight-medium"
       inset app
     >
+
       <v-col
         class="text-left"
         cols="12"
-        :to="'/admin'"
+        :to="'/login'"
+        @click="logout()"
+        
       >
+
         <v-btn @click="logout()" icon>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
+            <v-hover v-slot:default="{ hover }">
+
         <strong>Logout</strong>
+      </v-hover>
       </v-col>
+
     </v-footer>
     </v-navigation-drawer>
     <v-footer

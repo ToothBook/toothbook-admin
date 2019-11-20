@@ -1,33 +1,6 @@
 <template>
-<<<<<<< HEAD
 <!-- <div>  -->
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-layout align-center justify-center>
-            <v-flex xs12 sm8 md4>
-                <v-card class="elevation-12">
-              <v-toolbar
-                dark
-                flat
-                prominent
-                src="../assets/background.png"
-              >
-                <v-toolbar-title>ToothBook Login</v-toolbar-title>
-                <v-spacer />
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    v-model="username"
-                    label="Login"
-                    name="username"
-                    prepend-icon="mdi-account"
-                    clearable
-                    type="text"
-                  />
-=======
+      
 <v-app id="back">
   <v-container class="fill-height" fluid>
     <v-layout align-center justify-center>
@@ -41,7 +14,6 @@
           ></v-img>
         </v-row>
         <v-spacer />
->>>>>>> 6797a74519c3528135df0eab6da5a63bb2afc126
 
         <v-card  class="mx-auto" color="rgb(255, 255, 255, 0.2)" max-width="500px" raised>
           <v-img

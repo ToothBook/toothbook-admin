@@ -51,7 +51,8 @@ export function createAppointment(data){
         date: data.date,
         reason: data.reason,
         note: data.note,
-        status: data.status
+        status: data.status,
+        check: data.check
     })
     .then(response => {
         return response.data

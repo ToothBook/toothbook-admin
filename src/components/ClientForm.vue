@@ -118,6 +118,7 @@ import { createAppointment, getServices } from "../helpers/actions";
     name: "clientform",
     data: () => ({
       status: 'On Queue',
+      check: false,
       valid: true,
       firstname: '',
       lastname:'',
@@ -147,9 +148,10 @@ import { createAppointment, getServices } from "../helpers/actions";
 
     methods: {
       validate () {
+        this.submitRequest()
         if (this.$refs.form.validate()) {
           this.snackbar = true;
-          this.submitRequest()
+          // this.submitRequest();
           this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
         }
       },
@@ -165,7 +167,8 @@ import { createAppointment, getServices } from "../helpers/actions";
           date: this.date,
           reason: this.selectService, 
           note: this.note, 
-          status: this.status
+          status: this.status,
+          check: this.check,
           }
         createAppointment(data)
           .then(data => {
