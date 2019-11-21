@@ -66,3 +66,17 @@ export function updateAppointment(data, id){
     })
     .catch(err=> Promise.reject(err.message))
 }
+
+
+//captcha
+
+export function recaptcha(){
+    return axios.get('https://www.google.com/recaptcha/api/siteverify')
+    .then((response)=>{
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+
+}
