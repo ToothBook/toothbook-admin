@@ -79,6 +79,14 @@ export default {
         ],
         add: true,
         editedIndex: -1,
+        editedItem:{
+            name:'',
+            time:0,
+        },
+        defaultItem:{
+            name:'',
+            time:0,
+        }
     }),
 
     computed: {
@@ -99,6 +107,7 @@ export default {
             this.name = item.name;
             this.time = item.time;
             this.service_id = item._id;
+            this.editedIndex = this.services.indexOf(item)
             this.dialog = true;
         },
 
@@ -106,11 +115,11 @@ export default {
             this.dialog = false;
             setTimeout(() => {
                 this.add = true
-                this.editedIndex = -1;
+                this.editedIndex = 0;
             }, 300);
             this.name = null;
             this.time = null;
-            this.retrieveServices()
+            // this.retrieveServices()
         },
 
         formAction() {
@@ -127,6 +136,7 @@ export default {
                 .then(data => {
                     this.$emit('createService', data.data);
                     console.log(data.data)
+                    this.services.push(data.data)
                     this.close()
                 })
                 .catch(err => alert(err.error))
@@ -139,7 +149,7 @@ export default {
             deleteService(service._id)
                 .then(() => this.$emit('deleteService', service._id))
                 .catch(err => alert(err))
-            this.retrieveServices()
+            this.services.splice(index, 1)
         },
 
         update() {
@@ -148,6 +158,7 @@ export default {
                 .then(data => {
                     this.$emit('updateService', data.data)
                     console.log(data.data)
+                    Object.assign(this.services[this.editedIndex], data.data)
                     this.close()
                 })
                 .catch(err => alert(err.error));

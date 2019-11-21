@@ -6,7 +6,7 @@
     :expanded.sync="expanded"
     item-key="firstname"
     show-expand
-    class="elevation-5"
+    class="elevation-5 ma-5"
   >
     <template v-slot:top>
       <v-toolbar flat class="ma-5 mb-12 pa-5">
@@ -25,10 +25,12 @@
     </template>
     <template v-slot:item.status="{ item }">
       <v-checkbox class="black--text"
+              v-model="item.check"
               color="success"
-              value="success"
               hide-details
-            ><div slot="label" class="error--text">{{status}}</div></v-checkbox>
+              :label="item.status"
+              @change="check(item)"
+            />
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">{{item.note}}</td>
@@ -36,19 +38,25 @@
   </v-data-table>
 </template>
 <script>
-import {getAppointments , deleteAppointment} from "../helpers/actions";
+import {getAppointments , deleteAppointment, updateAppointment} from "../helpers/actions";
 export default {
   name: "Dashboard",
   data() {
     return {
-      status:'On Queue',
+      // status:'On Queue',
+      checked: false,
       expanded: [],
       clients:[],
       singleExpand: false,
       headers: [
         {
-          text: "Firstname",
+          text: "Date",
           align: "left",
+          value: "date"
+        },
+        {
+          text: "Firstname",
+          // align: "left",
           value: "firstname"
         },
         {
@@ -58,19 +66,9 @@ export default {
         { text: "Requested Dental Service", value: "reason" },
         { text: "Email Address", value: "email" },
         { text: "Contact Number", value: "contact" },
-        { text: "Status", value: "status" },
+        { text: "Status", value: "status", sortable: false },
         { text: "Actions", value: "action", sortable: false },
         { text: '', value: 'data-table-expand' },
-      ],
-      client: [
-        {
-          firstname: "Mary Grace",
-          lastname: "Tiburillo",
-          service: "Dental Cleaning",
-          email: "sample@gmail.com",
-          contact: "09123557841",
-          status: 1,
-        },
       ],
     };
   },
@@ -89,12 +87,34 @@ export default {
       getAppointments()
             .then(data => (this.clients = data.data , console.log(data.data)))
             .catch(err => alert(err))
+       },
+
+       check(item){
+            const index = this.clients.indexOf(item);
+            const client = this.clients[index];
+            if (client.check == false) {
+              // client.check = false;
+              client.status= "On Queue";
+            } else {
+              // client.check = true;
+              client.status="Done";
+            }
+            const data = {status: client.status, check: client.check}
+            updateAppointment(data, client._id)
+              .then(data => {
+                    this.$emit('updateService', data.data)
+                    console.log(data.data)
+                    // Object.assign(this.clients[this.editedIndex], data.data)
+                    // this.close()
+                })
+                .catch(err => alert(err.error));
        }
-    
   },
+  
   mounted() {
     getAppointments()
       .then(data => (this.clients = data.data , console.log(data.data)))
+      
       .catch(err => alert(err))
   }
 };
