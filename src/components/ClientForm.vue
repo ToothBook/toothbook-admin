@@ -33,7 +33,8 @@
           </template>
           <v-date-picker
             v-model="date"
-            @change="menu = false"
+            :min="date"
+            @change="menu= false"
           ></v-date-picker>
         </v-menu>
      <v-select
@@ -113,7 +114,7 @@
 
 <script>
 import moment from 'moment';
-import { createAppointment, getServices } from "../helpers/actions";
+import { createAppointment, getServices} from "../helpers/actions";
 
   export default {
     name: "clientform",
@@ -142,27 +143,16 @@ import { createAppointment, getServices } from "../helpers/actions";
       menu: false,
       checkbox: false,
       lazy: false,
+      data:[],
+
     }),
     computed: {
       computedDateFormattedMomentjs () {
-        return this.date ? moment(this.date).format('MMMM Do YYYY, h:mm:ss a') : ''
+        return this.date ? moment(this.date).format('MMMM DD YYYY') : ''
       },
     },
 
-    // filters: {
-    //     moment(date) {
-    //       return Moment(date).format('MMMM Do YYYY, h:mm:ss a');
-    //     }
-    // },
-
     methods: {
-      // select(){
-      //   getHours()
-      //   .then(data => (
-      //     if(data.data.hou)
-      //   ))
-      //   .catch(err => alert(err))
-      // },
       validate () {
         this.submitRequest()
         if (this.$refs.form.validate()) {
@@ -196,6 +186,7 @@ import { createAppointment, getServices } from "../helpers/actions";
         },
     },
     mounted() {
+      console.log(this.date)
       getServices()
         .then(data => (this.services = data.data)
         )

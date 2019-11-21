@@ -62,7 +62,7 @@
           <v-subheader>Operational Controls</v-subheader>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Total Working Hours Per Day</v-list-item-title>
+              <v-list-item-title>Total Working Minutes Per Day</v-list-item-title>
               <v-list-item-subtitle>{{hours}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -89,8 +89,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog2 = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog2 = false">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="close">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="updateTotalHours">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import {updateAccount} from '../helpers/actions'
+import {updateAccount, updateHours, getHours} from '../helpers/actions'
   export default {
     name: 'accountSettings',
     data () {
@@ -116,21 +116,43 @@ import {updateAccount} from '../helpers/actions'
         notifications: false,
         sound: true,
         widgets: false,
+        data: 0, 
       }
     },
     methods:{
-      update(){
+      updateAccount(){
         const data = {username: this.username, password: this.password}
         updateAccount(data)
         .then(data => {
-            this.$emit('updateService', data.data)
+            this.$emit('updateAccount', data.data)
             console.log(data.data)
             this.username = data.username;
             this.password = data.password
-            this.close()
           })
             .catch(err => alert(err.error));
+      },
+
+      updateTotalHours(){
+        const data = {totalHours: this.hours}
+        updateHours(data)
+          .then(data => {
+              this.$emit('updateHours', data.data)
+              console.log(data.data)
+              // this.hours = data.data[0].totalHours
+              this.dialog2 = false;
+            })
+              .catch(err => alert(err.error));
+      },
+      close(){
+        this.dialog2 = false;
+        console.log(this.data)
+        this.hours = this.data
       }
+    },
+  mounted() {
+        getHours()
+            .then(data => (this.hours = this.data = data.data[0].totalHours))
+            .catch(err => alert(err))
     }
   }
 </script>

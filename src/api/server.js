@@ -143,6 +143,7 @@ app.post('/api/hours/add', (req, res) => {
 
 app.get('/api/hours/get', (req, res) => {
     TotalHours.find({}, (err, data) => {
+        console.log(data)
         if (err) {
             return res.status(404).send('Error while getting list of services!');
         }
@@ -150,12 +151,28 @@ app.get('/api/hours/get', (req, res) => {
     })
 })
 
-app.post('/api/hours/update/:id', (req, res) => {
+// app.post('/api/hours/update/:id', (req, res) => {
+//     console.log(req.body)
+//     TotalHours.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+//         if (err) return res.status(404).send({ error: err.message });
+//         return res.send({ message: 'Service is successfully updated', data })
+        
+//     })
+// })
+
+app.post('/api/hours/update', (req, res) => {
     console.log(req.body)
-    TotalHours.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+    TotalHours.findOneAndUpdate({}, req.body.data, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
-        
+    })
+})
+
+app.get('/api/hours/getOne', (req, res) => {
+    TotalHours.findOne({hoursRequested:req.body} , (err, data) => {
+        console.log(data)
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
     })
 })
 

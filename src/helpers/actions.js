@@ -111,11 +111,21 @@ export function createHours(data) {
         .catch(err => Promise.reject(err.message))
 }
 
-export function updateHours(data, id) {
-    return axios.post(`${BASE_URL}/api/hours/update/${id}`, { data })
+export function updateHours(data) {
+    return axios.post(`${BASE_URL}/api/hours/update/`, { data })
         .then(response => {
             return response.data
         })
         .catch(err => Promise.reject(err.message))
 }
+
+export function getDate(data) {
+    return axios.get(`${BASE_URL}/api/hours/getOne/`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}
+
+
 

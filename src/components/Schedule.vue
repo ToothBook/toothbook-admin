@@ -86,7 +86,7 @@ export default {
         defaultItem:{
             name:'',
             time:0,
-        }
+        },
     }),
 
     computed: {
@@ -172,7 +172,7 @@ export default {
 
     mounted() {
         getServices()
-            .then(data => (this.services = data.data))
+            .then(data => (this.services = data.data, console.log(this.services)))
             .catch(err => alert(err))
     }
 };
