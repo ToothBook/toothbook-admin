@@ -114,8 +114,15 @@
 
 <script>
 import moment from 'moment';
+<<<<<<< HEAD
 import { createAppointment, getServices} from "../helpers/actions";
 
+=======
+import { createAppointment, getServices } from "../helpers/actions";
+import Vue from "vue";
+import { VueReCaptcha } from "vue-recaptcha-v3";
+Vue.use(VueReCaptcha, { siteKey: "6LeT38MUAAAAAL2uxDsVNaptLUdrPOIvIgvz44Mw" });
+>>>>>>> 7105bd7f6f9afeed11e8177bedbafe6cad8cdc42
   export default {
     name: "clientform",
     data: () => ({
@@ -156,11 +163,18 @@ import { createAppointment, getServices} from "../helpers/actions";
       validate () {
         this.submitRequest()
         if (this.$refs.form.validate()) {
+<<<<<<< HEAD
+           this.disableSubmit = true;
+          this.submitRequest()
+          this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;  
+=======
           this.snackbar = true;
           // this.submitRequest();
           this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
+>>>>>>> 7c91c86fcad077a4dc2d99d867845b01a428c644
         }
       },
+      
       submitRequest() {
         if(this.note == ''){
           this.note = 'No note is added!'
@@ -194,6 +208,7 @@ import { createAppointment, getServices} from "../helpers/actions";
     }
   }
 </script>
+
 
 <style>
   .v-sheet--offset {
