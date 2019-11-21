@@ -102,7 +102,7 @@ export default {
       { icon: "mdi-view-dashboard", title: "Dashboard", link: "/admin" },
       { icon: "mdi-timetable", title: "Services", link: "/services" },
       { icon: "mdi-account-multiple", title: "Clients", link: "/clients" },
-      { icon: "mdi-account", title: "Account", link: "/account-settings" }
+      { icon: "mdi-settings", title: "Settings", link: "/account-settings" }
     ]
   }),
 

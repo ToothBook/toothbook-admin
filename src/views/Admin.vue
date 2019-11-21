@@ -50,8 +50,13 @@ export default {
       singleExpand: false,
       headers: [
         {
-          text: "Firstname",
+          text: "Date",
           align: "left",
+          value: "date"
+        },
+        {
+          text: "Firstname",
+          // align: "left",
           value: "firstname"
         },
         {
@@ -105,6 +110,7 @@ export default {
                 .catch(err => alert(err.error));
        }
   },
+  
   mounted() {
     getAppointments()
       .then(data => (this.clients = data.data , console.log(data.data)))

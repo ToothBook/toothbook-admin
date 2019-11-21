@@ -17,16 +17,7 @@
       v-model="valid"
       :lazy-validation="lazy"
     >
-     <v-select
-        v-model="selectService"
-        :items="services"
-        item-text="name"
-        :rules="[v => !!v || 'Item is required']"
-        label="Dental Services"
-        sort-by="name"
-        required
-      ></v-select>
-      <v-menu
+     <v-menu
           v-model="menu"
           :close-on-content-click="false"
           max-width="290"
@@ -45,6 +36,16 @@
             @change="menu = false"
           ></v-date-picker>
         </v-menu>
+     <v-select
+        v-model="selectService"
+        :items="services"
+        item-text="name"
+        :rules="[v => !!v || 'Item is required']"
+        label="Dental Services"
+        sort-by="name"
+        required
+      ></v-select>
+     
         <h3 class="mb-2">Personal Information</h3>
      <v-row>
         <v-col
@@ -123,6 +124,8 @@ import { createAppointment, getServices } from "../helpers/actions";
       firstname: '',
       lastname:'',
       contact:'',
+      hours:[],
+      // dateOfSubmit: this.moment(date),
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 50) || 'Name must be less than 50 characters',
@@ -142,11 +145,24 @@ import { createAppointment, getServices } from "../helpers/actions";
     }),
     computed: {
       computedDateFormattedMomentjs () {
-        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+        return this.date ? moment(this.date).format('MMMM Do YYYY, h:mm:ss a') : ''
       },
     },
 
+    // filters: {
+    //     moment(date) {
+    //       return Moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    //     }
+    // },
+
     methods: {
+      // select(){
+      //   getHours()
+      //   .then(data => (
+      //     if(data.data.hou)
+      //   ))
+      //   .catch(err => alert(err))
+      // },
       validate () {
         this.submitRequest()
         if (this.$refs.form.validate()) {
@@ -169,6 +185,7 @@ import { createAppointment, getServices } from "../helpers/actions";
           note: this.note, 
           status: this.status,
           check: this.check,
+          dateOfSubmit: this.dateOfSubmit
           }
         createAppointment(data)
           .then(data => {

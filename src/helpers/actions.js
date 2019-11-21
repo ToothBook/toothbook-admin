@@ -52,7 +52,8 @@ export function createAppointment(data){
         reason: data.reason,
         note: data.note,
         status: data.status,
-        check: data.check
+        check: data.check,
+        dateOfSubmit: data.dateOfSubmit
     })
     .then(response => {
         return response.data
@@ -95,3 +96,26 @@ export function updateAccount(data, id) {
         })
         .catch(err => Promise.reject(err.message))
 }
+
+//Hours
+export function getHours() {
+    return axios.get(`${BASE_URL}/api/hours/get`)
+        .then(response => response.data)
+}
+
+export function createHours(data) {
+    return axios.post(`${BASE_URL}/api/hours/create`, { totalHours: data.totalHours, hoursRequested: data.hoursRequested })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}
+
+export function updateHours(data, id) {
+    return axios.post(`${BASE_URL}/api/hours/update/${id}`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}
+

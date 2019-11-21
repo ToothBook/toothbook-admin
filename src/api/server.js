@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const Service = require('./Services');
 const Appointment = require('./Appointment');
 const AdminAccnt = require('./AdminAccount')
+const TotalHours = require('./TotalHours')
 
 //database - mongoose
 mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
@@ -73,7 +74,8 @@ app.post('/api/appointment/create', (req, res) => {
         reason: req.body.reason,
         note: req.body.note,
         status: req.body.status,
-        check: req.body.check
+        check: req.body.check,
+        dateOfSubmit: req.body.dateOfSubmit
     });
     data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });
@@ -129,6 +131,34 @@ app.post('/api/account/delete/:id', (req, res) => {
         return res.send({ message: 'Service is successfully deleted!', data })
     })
 })
+
+//Hours
+app.post('/api/hours/add', (req, res) => {
+    const data = new TotalHours({totalHours: req.body.totalHours, hoursRequested: req.body.hoursRequested });
+    data.save((err) =>{
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ data });
+    })
+})
+
+app.get('/api/hours/get', (req, res) => {
+    TotalHours.find({}, (err, data) => {
+        if (err) {
+            return res.status(404).send('Error while getting list of services!');
+        }
+        return res.send({ data })
+    })
+})
+
+app.post('/api/hours/update/:id', (req, res) => {
+    console.log(req.body)
+    TotalHours.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+        
+    })
+})
+
 
 
 const PORT = 3000;

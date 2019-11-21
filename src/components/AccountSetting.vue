@@ -23,7 +23,7 @@
           <v-list-item>
           <v-list-item-content>
         <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog1" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn color="light-blue darken-2" v-on="on" absolute right text>Edit Account</v-btn>
       </template>
@@ -46,8 +46,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog1 = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog1 = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -57,8 +57,46 @@
         </v-list>
 
         <v-divider></v-divider>
+        <v-card-title class="headline">Operation Settings</v-card-title>
         <v-list three-line subheader>
-          <v-subheader>Future Settings</v-subheader>
+          <v-subheader>Operational Controls</v-subheader>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Total Working Hours Per Day</v-list-item-title>
+              <v-list-item-subtitle>{{hours}}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+          <v-list-item-content>
+        <v-row justify="center">
+    <v-dialog v-model="dialog2" persistent max-width="400px">
+      <template v-slot:activator="{ on }">
+        <v-btn color="light-blue darken-2" v-on="on" absolute right text>Set Hours</v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Total Working Hours</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="hours" label="Total Hours" type="number" required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <!-- <small>*indicates required field</small> -->
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog2 = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog2 = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+         </v-list-item-content>
+         </v-list-item>
         </v-list>
         
       </v-card>
@@ -72,7 +110,9 @@ import {updateAccount} from '../helpers/actions'
       return {
         username:'',
         password:'',
-        dialog: false,
+        hours:0,
+        dialog1: false,
+        dialog2: false,
         notifications: false,
         sound: true,
         widgets: false,
