@@ -33,8 +33,8 @@
           </template>
           <v-date-picker
             v-model="date"
-            :min="date"
-            @change="menu= false"
+            :min="currentDate"
+            @change="selectDate"
           ></v-date-picker>
         </v-menu>
      <v-select
@@ -114,15 +114,8 @@
 
 <script>
 import moment from 'moment';
-<<<<<<< HEAD
-import { createAppointment, getServices} from "../helpers/actions";
+import { createAppointment, getServices, getHours, updateHours} from "../helpers/actions";
 
-=======
-import { createAppointment, getServices } from "../helpers/actions";
-import Vue from "vue";
-import { VueReCaptcha } from "vue-recaptcha-v3";
-Vue.use(VueReCaptcha, { siteKey: "6LeT38MUAAAAAL2uxDsVNaptLUdrPOIvIgvz44Mw" });
->>>>>>> 7105bd7f6f9afeed11e8177bedbafe6cad8cdc42
   export default {
     name: "clientform",
     data: () => ({
@@ -147,10 +140,12 @@ Vue.use(VueReCaptcha, { siteKey: "6LeT38MUAAAAAL2uxDsVNaptLUdrPOIvIgvz44Mw" });
       services: [],
       note:'',
       date: new Date().toISOString().substr(0, 10),
+      currentDate: new Date().toISOString().substr(0, 10),
       menu: false,
       checkbox: false,
       lazy: false,
-      data:[],
+      dataHours:[],
+      data:{}
 
     }),
     computed: {
@@ -160,18 +155,45 @@ Vue.use(VueReCaptcha, { siteKey: "6LeT38MUAAAAAL2uxDsVNaptLUdrPOIvIgvz44Mw" });
     },
 
     methods: {
+      selectDate(){
+        const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
+        const index = this.services.map(e => e.name).indexOf(this.selectService)
+        const time = this.services[index].time;
+        // console.log(time)
+        if(!list.includes(this.date)){
+          this.dataHours[0].hoursRequested.push({date: this.date, time: time})
+          // console.log(list)
+        }else{
+          const indexDate = list.map(e => e.date).indexOf(this.date);
+          const totalTime = list[indexDate].time + time;
+          if ((totalTime > this.dataHours.totalHours)){
+            alert(totalTime)
+          }else{
+            this.dataHours[0].hoursRequested[indexDate].time += time;
+            alert("ok")
+          }
+        }
+      },
+
+      submitHours(){
+        updateHours(this.dataHours)
+          .then(data => {
+            this.$emit('updateService', data.data)
+            console.log(data.data)
+        })
+          .catch(err => alert(err.error));
+      },
+
       validate () {
-        this.submitRequest()
+        // this.submitRequest()
         if (this.$refs.form.validate()) {
-<<<<<<< HEAD
            this.disableSubmit = true;
-          this.submitRequest()
+          this.submitRequest();
+          this.submitHours();
           this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;  
-=======
           this.snackbar = true;
           // this.submitRequest();
-          this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
->>>>>>> 7c91c86fcad077a4dc2d99d867845b01a428c644
+          // this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
         }
       },
       
@@ -189,20 +211,22 @@ Vue.use(VueReCaptcha, { siteKey: "6LeT38MUAAAAAL2uxDsVNaptLUdrPOIvIgvz44Mw" });
           note: this.note, 
           status: this.status,
           check: this.check,
-          dateOfSubmit: this.dateOfSubmit
+          dateOfSubmit: moment().format('MMMM Do YYYY, h:mm:ss a')
           }
         createAppointment(data)
           .then(data => {
           this.$emit('createAppointment', data.data);
-          console.log(data.data)
           })
           .catch(err => alert(err.error))
         },
     },
     mounted() {
-      console.log(this.date)
       getServices()
-        .then(data => (this.services = data.data)
+        .then(data => (this.services = data.data, console.log(data.data) )
+        )
+        .catch(err => alert(err))
+      getHours()
+        .then(data => (this.dataHours = data.data)
         )
         .catch(err => alert(err))
     }

@@ -69,7 +69,6 @@ export function updateAppointment(data, id){
     .catch(err=> Promise.reject(err.message))
 }
 
-<<<<<<< HEAD
 
 //captcha
 
@@ -83,7 +82,6 @@ export function recaptcha(){
     })
 
 }
-=======
 //Admin - Account
 export function getAccount() {
     return axios.get(`${BASE_URL}/api/account/retrieve`)
@@ -134,7 +132,6 @@ export function updateHours(data) {
         .catch(err => Promise.reject(err.message))
 }
 
-<<<<<<< HEAD
 export function getDate(data) {
     return axios.get(`${BASE_URL}/api/hours/getOne/`, { data })
         .then(response => {
@@ -145,6 +142,3 @@ export function getDate(data) {
 
 
 
-=======
->>>>>>> 7c91c86fcad077a4dc2d99d867845b01a428c644
->>>>>>> 7105bd7f6f9afeed11e8177bedbafe6cad8cdc42

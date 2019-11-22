@@ -12,7 +12,7 @@ const AppointmentSchema = Schema(
         note: {type: String, required: true},
         status: {type: String, required: true},
         check: {type: Boolean, required: true},
-        dateOfSubmit: {type: Date, required: true}
+        dateOfSubmit: {type: String, required: true}
     }, 
 );
 
