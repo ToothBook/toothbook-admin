@@ -35,6 +35,9 @@
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">{{item.note}}</td>
     </template>
+    <template v-slot:item.date="{ item }">
+           <span>{{item.date.substr(0, 10)}}</span>
+         </template>
   </v-data-table>
 </template>
 <script>
@@ -50,13 +53,16 @@ export default {
       singleExpand: false,
       headers: [
         {
-          text: "Date",
+          text: "Date of Reservation",
           align: "left",
           value: "date"
         },
         {
+          text: "Date of Submission",
+          value: "dateOfSubmit"
+        },
+        {
           text: "Firstname",
-          // align: "left",
           value: "firstname"
         },
         {
@@ -64,8 +70,8 @@ export default {
           value: "lastname"
         },
         { text: "Requested Dental Service", value: "reason" },
-        { text: "Email Address", value: "email" },
-        { text: "Contact Number", value: "contact" },
+        // { text: "Email Address", value: "email" },
+        // { text: "Contact Number", value: "contact" },
         { text: "Status", value: "status", sortable: false },
         { text: "Actions", value: "action", sortable: false },
         { text: '', value: 'data-table-expand' },

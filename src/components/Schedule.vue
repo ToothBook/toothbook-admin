@@ -3,7 +3,7 @@
         :headers="headers"
         :items="services" 
         sort-by="name" 
-        class="elevation-5">
+        class="elevation-5 ma-5">
         <template v-slot:top>
           <v-toolbar flat color="white" class="ma-4 mb-12 pa-5"  >
             <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
@@ -167,7 +167,8 @@ export default {
             getServices()
             .then(data => this.services = data.data)
             .catch(err => alert(err))
-        }
+        },
+        
     },
 
     mounted() {
