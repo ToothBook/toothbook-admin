@@ -159,27 +159,30 @@ import { createAppointment, getServices, getHours, updateHours} from "../helpers
         const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
         const index = this.services.map(e => e.name).indexOf(this.selectService)
         const time = this.services[index].time;
-        // console.log(time)
-        if(!list.includes(this.date)){
-          this.dataHours[0].hoursRequested.push({date: this.date, time: time})
-          // console.log(list)
+        const date =`${this.date}T00:00:00.000Z`;
+        console.log(list)
+        if(!(list.some(item => item.date == date))){
+          this.dataHours[0].hoursRequested.push({date: date, minutes: time})
+          alert("ok")
         }else{
-          const indexDate = list.map(e => e.date).indexOf(this.date);
-          const totalTime = list[indexDate].time + time;
-          if ((totalTime > this.dataHours.totalHours)){
+          const indexDate = list.map(e => e.date).indexOf(date);
+          const totalTime = list[indexDate].minutes + time;
+          if ((totalTime > this.dataHours[0].totalHours)){
             alert(totalTime)
           }else{
-            this.dataHours[0].hoursRequested[indexDate].time += time;
-            alert("ok")
+            list[indexDate].minutes += time;
+            alert("test")
           }
         }
+        console.log(list)
       },
 
       submitHours(){
-        updateHours(this.dataHours)
+        console.log(this.dataHours[0])
+        updateHours(this.dataHours[0])
           .then(data => {
-            this.$emit('updateService', data.data)
-            console.log(data.data)
+            this.$emit('updateHours', data.data)
+            // console.log(data.data)
         })
           .catch(err => alert(err.error));
       },
@@ -222,7 +225,7 @@ import { createAppointment, getServices, getHours, updateHours} from "../helpers
     },
     mounted() {
       getServices()
-        .then(data => (this.services = data.data, console.log(data.data) )
+        .then(data => (this.services = data.data)
         )
         .catch(err => alert(err))
       getHours()
