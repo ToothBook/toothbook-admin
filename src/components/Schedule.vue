@@ -46,7 +46,9 @@
     <v-icon small class="mr-2" @click="editItem(item)">
         edit
     </v-icon>
-    <v-icon small @click="deleteService(item)">
+    <!-- <v-icon small @click="deleteService(item)"> -->
+    <v-icon small @click="alertDelete(item)">
+
         delete
     </v-icon>
 </template>
@@ -55,6 +57,8 @@
 
 <script>
 import { createService, getServices, deleteService, updateService } from "../helpers/actions";
+import Swal from 'sweetalert2'
+
 export default {
     name: "schedules",
     // props:['service'],
@@ -168,7 +172,29 @@ export default {
             .then(data => this.services = data.data)
             .catch(err => alert(err))
         },
-        
+        alertDelete(item){
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                this.deleteService(item);
+                Swal.fire({
+                title: 'Deleted!',
+                text: 'Your file has been deleted.',
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                }
+            })
+        }
     },
 
     mounted() {

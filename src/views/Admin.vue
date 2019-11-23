@@ -18,7 +18,7 @@
     <template v-slot:item.action="{ item }">
       <v-icon
         small
-        @click="deleteAppointment(item)"
+        @click="alertDelete(item)"
       >
         mdi-delete
       </v-icon>
@@ -42,6 +42,8 @@
 </template>
 <script>
 import {getAppointments , deleteAppointment, updateAppointment} from "../helpers/actions";
+import Swal from 'sweetalert2'
+
 export default {
   name: "Dashboard",
   data() {
@@ -114,7 +116,30 @@ export default {
                     // this.close()
                 })
                 .catch(err => alert(err.error));
-       }
+       },
+       alertDelete(item){
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+              this.deleteAppointment(item)
+              Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              type: 'success',
+              showConfirmButton: false,
+              timer: 1500
+              })
+            }
+            })
+        }
   },
   
   mounted() {

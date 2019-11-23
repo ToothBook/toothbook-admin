@@ -4,7 +4,7 @@
       <!-- <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
       </template> -->
-      <v-card class="mt-4 pa-8" height="100%">
+      <v-card class="ma-5 pa-8" height="100%">
         <v-card-title class="headline">Account Settings</v-card-title>
         <v-list three-line subheader>
           <v-subheader>User Controls</v-subheader>
