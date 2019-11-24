@@ -181,7 +181,6 @@ export default {
 
       if (!list.some(item => item.date == date)) {
         this.dataHours[0].hoursRequested.push({ date: date, minutes: time });
-        alert("ok");
       } else {
         const indexDate = list.map(e => e.date).indexOf(date);
         const totalTime = list[indexDate].minutes + time;
@@ -190,7 +189,6 @@ export default {
           this.date = this.currentDate;
         } else {
           list[indexDate].minutes += time;
-          alert("test");
         }
       }
       console.log(list);
