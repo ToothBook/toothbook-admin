@@ -4,10 +4,12 @@
       <!-- <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
       </template> -->
-      <v-card class="ma-5 pa-8" height="100%">
-        <v-card-title class="headline">Account Settings</v-card-title>
+      <v-card class="ma-4 pa-5" height="100%">
+        <v-card-title class="headline">
+          <v-icon large class="mr-2">mdi-account</v-icon>
+          Account Settings</v-card-title>
         <v-list three-line subheader>
-          <v-subheader>User Controls</v-subheader>
+          <!-- <v-subheader>User Controls</v-subheader> -->
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>Username</v-list-item-title>
@@ -59,7 +61,7 @@
         <v-divider></v-divider>
         <v-card-title class="headline">Operation Settings</v-card-title>
         <v-list three-line subheader>
-          <v-subheader>Operational Controls</v-subheader>
+          <!-- <v-subheader>Operational Controls</v-subheader> -->
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>Total Working Minutes Per Day</v-list-item-title>

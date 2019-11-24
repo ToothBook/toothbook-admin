@@ -32,7 +32,7 @@
                 v-model="username"
                 label="Login"
                 name="username"
-                prepend-icon="mdi-account-box"
+                prepend-icon="mdi-account"
                 color="indigo"
                 clearable
                 type="text"
@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
       }
     }
   },
-  props: {}
+  // props: {} 
 };
 </script>
 <style scoped>

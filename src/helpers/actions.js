@@ -42,44 +42,44 @@ export function deleteAppointment(id) {
         .catch(err => Promise.reject(err.message))
 }
 
-export function createAppointment(data){
+export function createAppointment(data) {
     return axios.post(`${BASE_URL}/api/appointment/create`, {
-        firstname: data.firstname,
-        lastname: data.lastname,
-        email: data.email,
-        contact: data.contact,
-        date: data.date,
-        reason: data.reason,
-        note: data.note,
-        status: data.status,
-        check: data.check,
-        dateOfSubmit: data.dateOfSubmit
-    })
-    .then(response => {
-        return response.data
-    })
-    .catch (err => Promise.reject(err.message))
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            contact: data.contact,
+            date: data.date,
+            reason: data.reason,
+            note: data.note,
+            status: data.status,
+            check: data.check,
+            dateOfSubmit: data.dateOfSubmit
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
 }
 
-export function updateAppointment(data, id){
-    return axios.post(`${BASE_URL}/api/appointment/update/${id}`, {data})
-    .then(response => {
-        return response.data
-    })
-    .catch(err=> Promise.reject(err.message))
+export function updateAppointment(data, id) {
+    return axios.post(`${BASE_URL}/api/appointment/update/${id}`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
 }
 
 
 //captcha
 
-export function recaptcha(){
+export function recaptcha() {
     return axios.get('https://www.google.com/recaptcha/api/siteverify')
-    .then((response)=>{
-      console.log(response)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 
 }
 //Admin - Account
@@ -132,13 +132,28 @@ export function updateHours(data) {
         .catch(err => Promise.reject(err.message))
 }
 
-export function getDate(data) {
-    return axios.get(`${BASE_URL}/api/hours/getOne/`, { data })
+// export function getDate(data) {
+//     return axios.get(`${BASE_URL}/api/hours/getOne/`, { data })
+//         .then(response => {
+//             return response.data
+//         })
+//         .catch(err => Promise.reject(err.message))
+// }
+export function login(data) {
+    return axios.post(`${BASE_URL}/api/admin/login`, {
+            username: data.username,
+            password: data.password,
+        })
         .then(response => {
             return response.data
         })
-        .catch(err => Promise.reject(err.message))
+        .catch(err => Promise.reject(err.message));
 }
 
-
-
+export function getuser(data) {
+    return axios.get(`${BASE_URL}/api/admin/get`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message));
+}

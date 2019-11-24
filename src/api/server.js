@@ -10,6 +10,9 @@ const Appointment = require('./Appointment');
 const AdminAccnt = require('./AdminAccount')
 const TotalHours = require('./TotalHours')
 
+//modules
+const login = require('../modules/login')
+
 //database - mongoose
 mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
@@ -44,7 +47,7 @@ app.post('/api/service/update/:id', (req, res) => {
     Service.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
-        
+
     })
 })
 
@@ -121,7 +124,7 @@ app.post('/api/account/update/:id', (req, res) => {
     AdminAccnt.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
-        
+
     })
 })
 
@@ -134,8 +137,8 @@ app.post('/api/account/delete/:id', (req, res) => {
 
 //Hours
 app.post('/api/hours/add', (req, res) => {
-    const data = new TotalHours({totalHours: req.body.totalHours, hoursRequested: req.body.hoursRequested });
-    data.save((err) =>{
+    const data = new TotalHours({ totalHours: req.body.totalHours, hoursRequested: req.body.hoursRequested });
+    data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
     })
@@ -156,7 +159,7 @@ app.get('/api/hours/get', (req, res) => {
 //     TotalHours.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
 //         if (err) return res.status(404).send({ error: err.message });
 //         return res.send({ message: 'Service is successfully updated', data })
-        
+
 //     })
 // })
 
@@ -168,14 +171,30 @@ app.post('/api/hours/update', (req, res) => {
     })
 })
 
-app.get('/api/hours/getOne', (req, res) => {
-    TotalHours.findOne({hoursRequested:req.body} , (err, data) => {
-        console.log(data)
-        if (err) return res.status(404).send({ error: err.message });
-        return res.send({ message: 'Service is successfully updated', data })
-    })
+// app.get('/api/hours/getOne', (req, res) => {
+//     TotalHours.findOne({hoursRequested:req.body} , (err, data) => {
+//         console.log(data)
+//         if (err) return res.status(404).send({ error: err.message });
+//         return res.send({ message: 'Service is successfully updated', data })
+//     })
+// })
+
+//login
+// app.post('/api/admin/login', (req, res) => {
+//     login(req.body, res)
+// })
+app.post("/api/admin/login", (req, res) => {
+    console.log(req.body);
+    login.login(req, res);
+});
+
+app.get("/api/admin/get", (req, res) => {
+    login.getuser(req, res)
 })
 
+app.post("api/admin/delete", (req, res) => {
+    login.deleteuser(req, res)
+})
 
 
 const PORT = 3000;

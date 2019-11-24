@@ -2,7 +2,7 @@
   <v-app>
     <v-app id="main" :style="{background: $vuetify.theme.themes[theme].background}">
     <Header v-if="$route.name!= 'Login'" />
-    <v-content  class="mb-4">
+    <v-content  class="mb-5">
       <router-view />
     </v-content>
   </v-app>

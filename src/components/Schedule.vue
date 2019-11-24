@@ -3,7 +3,7 @@
         :headers="headers"
         :items="services" 
         sort-by="name" 
-        class="elevation-5 ma-5">
+        class="elevation-5 ma-5 pa-4">
         <template v-slot:top>
           <v-toolbar flat color="white" class="ma-4 mb-12 pa-5"  >
             <v-toolbar-title class="display-1 ">MANAGE DENTAL SERVICES</v-toolbar-title>
@@ -18,9 +18,13 @@
                     <v-btn color="light-blue lighten-1" dark class="mb-2" v-on="on">New Item</v-btn>
                 </template>
             <v-card>
-                <v-card-title class="blue white--text">
+                <v-card-title class="black--text">
+                    <v-list-item-avatar tile right size="62">
+            <img src="../assets/toothbook-logo5.png" />
+          </v-list-item-avatar>
                 <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
+                <v-divider color="light-blue lighten-2"></v-divider>
                 <v-card-text>
                     <v-container>
                         <v-form class="mt-10"
