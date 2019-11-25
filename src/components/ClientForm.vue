@@ -222,6 +222,7 @@ export default {
         this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = this.date = null;
         this.checkbox=false;
         this.snackbar = true;
+        this.$refs.form.reset()
         // this.submitRequest();
         // this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
       }

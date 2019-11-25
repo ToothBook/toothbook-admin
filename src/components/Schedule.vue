@@ -30,8 +30,7 @@
                         <v-form class="mt-10"
                             ref="form"
                             v-model="valid"
-                        
-                            lazy-validation
+                            :lazy-validation="lazy"
                         >  <v-text-field v-model="name" :rules="inputRules" outlined dense  label="Service Name" required></v-text-field>
                             <v-text-field v-model="time" :rules="inputRules" outlined dense label="Estimated Time (minutes)" type="number" required></v-text-field>
                         </v-form>
@@ -73,7 +72,8 @@ export default {
         services: [],
         service_id: 0,
         dialog: false,
-        valid: false,
+        valid: true,
+        lazy: false,
         inputRules: [
             v => !!v || 'Input is required'
         ],
@@ -106,7 +106,8 @@ export default {
     watch: {
         dialog(val) {
             val || this.close();
-        }
+        },
+
     },
 
     methods: {
@@ -127,6 +128,7 @@ export default {
             }, 300);
             this.name = null;
             this.time = null;
+            this.$refs.form.reset()
             // this.retrieveServices()
         },
 
@@ -152,10 +154,10 @@ export default {
 
         deleteService(item) {
             const index = this.services.indexOf(item);
-            const service = this.services[index];
-            console.log(service)
-            deleteService(service._id)
-                .then(() => this.$emit('deleteService', service._id))
+            // const service = this.services[index];
+            console.log(item)
+            deleteService(item._id)
+                .then(() => this.$emit('deleteService'))
                 .catch(err => alert(err))
             this.services.splice(index, 1)
         },
@@ -200,7 +202,6 @@ export default {
             })
         }
     },
-
     mounted() {
         getServices()
             .then(data => (this.services = data.data, console.log(this.services)))
