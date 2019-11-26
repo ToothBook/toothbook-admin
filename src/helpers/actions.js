@@ -52,7 +52,7 @@ export function createAppointment(data) {
             reason: data.reason,
             note: data.note,
             status: data.status,
-            check: data.check,
+            action: data.action,
             dateOfSubmit: data.dateOfSubmit
         })
         .then(response => {

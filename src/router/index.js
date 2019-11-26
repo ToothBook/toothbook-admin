@@ -121,4 +121,15 @@ const router = new VueRouter({
 //     }
 // });
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(route => route.meta.requiresAuth)) {
+        if (store.getters.isLoggedIn) {
+            next();
+        } else {
+            next({ path: "/" });
+        }
+    }
+    next();
+});
+
 export default router

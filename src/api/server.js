@@ -77,7 +77,7 @@ app.post('/api/appointment/create', (req, res) => {
         reason: req.body.reason,
         note: req.body.note,
         status: req.body.status,
-        check: req.body.check,
+        action: req.body.action,
         dateOfSubmit: req.body.dateOfSubmit
     });
     data.save((err) => {

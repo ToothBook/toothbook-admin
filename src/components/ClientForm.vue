@@ -1,22 +1,14 @@
 <template>
-  <v-card
-    class="my-4 mx-auto px-10 pb-10"
-    max-width="70%"
-    elevation="5"
-  >
+  <v-card class="my-4 mx-auto px-10 pb-10" max-width="70%" elevation="5">
     <v-sheet
       class="v-sheet--offset mx-auto mt-10 pa-5"
       color="light-blue accent-2"
       elevation="10"
       max-width="calc(100% - 1px)"
     >
-    <h3>Please provide the following information:</h3>
+      <h3>Please provide the following information:</h3>
     </v-sheet>
-      <v-form
-         ref="form"
-      v-model="valid"
-      :lazy-validation="lazy"
-    >
+    <v-form ref="form" v-model="valid" :lazy-validation="lazy">
       <v-select
         v-model="selectService"
         :items="services"
@@ -27,106 +19,55 @@
         @change="disable = false, modal= true"
         required
       ></v-select>
-     <!-- <v-menu
+      <!-- <v-menu
           v-model="menu"
           :close-on-content-click="false"
           max-width="290"
-        > -->
-        <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="date"
-        persistent
-        width="290px"
-      >
-      <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="date"
-            label="When"
-            readonly
-            v-on="on"
-            :disabled="disable"
-          ></v-text-field>
+      >-->
+      <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
+        <template v-slot:activator="{ on }">
+          <v-text-field v-model="date" label="When" readonly v-on="on" :disabled="disable"></v-text-field>
         </template>
-        <v-date-picker 
-          v-model="date"
-          scrollable
-          :min="currentDate"
-          @change="selectDate"
-          >
+        <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
           <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
         </v-date-picker>
       </v-dialog>
-        <h3 class="mb-2">Personal Information</h3>
-     <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="firstname"
-            :rules="nameRules"
-            label="First name"
-            required
-          ></v-text-field>
+      <h3 class="mb-2">Personal Information</h3>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-text-field v-model="firstname" :rules="nameRules" label="First name" required></v-text-field>
         </v-col>
 
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            v-model="lastname"
-            :rules="nameRules"
-            label="Last name"
-            required
-          ></v-text-field>
+        <v-col cols="12" md="6">
+          <v-text-field v-model="lastname" :rules="nameRules" label="Last name" required></v-text-field>
         </v-col>
-        </v-row>
+      </v-row>
+      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
       <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        required
-      ></v-text-field>
-      <v-text-field
-      v-model="contact"
+        v-model="contact"
         :rules="[v => !!v || 'Item is required']"
         label="Contact Number"
         required
       ></v-text-field>
-      <v-textarea
-      v-model="note"
-          outlined
-          name="input-7-4"
-          label="Notes"
-          value=""
-        ></v-textarea>
-        <v-spacer></v-spacer>
-        <v-checkbox
+      <v-textarea v-model="note" outlined name="input-7-4" label="Notes" value></v-textarea>
+      <v-spacer></v-spacer>
+      <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
         label="Do you agree?"
         required
       ></v-checkbox>
 
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="validate()"
-      >
-        Submit Request
-      </v-btn>
-      </v-form>
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate()">Submit Request</v-btn>
+    </v-form>
   </v-card>
 </template>
 
 <script>
 import moment from "moment";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import {
   createAppointment,
   getServices,
@@ -138,7 +79,7 @@ export default {
   name: "clientform",
   data: () => ({
     status: "On Queue",
-    check: false,
+    action: "Process",
     valid: true,
     firstname: "",
     lastname: "",
@@ -204,14 +145,14 @@ export default {
         .catch(err => alert(err.error));
     },
     alertDisplay() {
-        // this.$swal('Heading', 'this is a Heading', 'OK');
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'The date is not available anymore!',
-          // footer: '<a href>Why do I have this issue?</a>'
-        })
-      },
+      // this.$swal('Heading', 'this is a Heading', 'OK');
+      Swal.fire({
+        type: "error",
+        title: "Oops...",
+        text: "The date is not available anymore!"
+        // footer: '<a href>Why do I have this issue?</a>'
+      });
+    },
 
     validate() {
       // this.submitRequest()
@@ -220,9 +161,9 @@ export default {
         this.submitRequest();
         this.submitHours();
         this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = this.date = null;
-        this.checkbox=false;
+        this.checkbox = false;
         this.snackbar = true;
-        this.$refs.form.reset()
+        this.$refs.form.reset();
         // this.submitRequest();
         // this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
       }
@@ -241,7 +182,7 @@ export default {
         reason: this.selectService,
         note: this.note,
         status: this.status,
-        check: this.check,
+        action: this.action,
         dateOfSubmit: moment().format("MMMM Do YYYY, h:mm:ss a")
       };
       createAppointment(data)
