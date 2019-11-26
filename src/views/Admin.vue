@@ -16,7 +16,7 @@
     </template>
     <template v-slot:item.action="{ item }">
       <!-- <v-icon small @click="alertDelete(item)">mdi-delete</v-icon> -->
-      <v-btn x-small color="secondary" dark @click="action(item)">{{item.action}}</v-btn>
+      <v-btn x-small color="secondary" dark @click="actionBtn(item)">{{item.action}}</v-btn>
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
@@ -42,10 +42,11 @@
       />-->
       <span>{{item.status}}</span>
     </template>
-    <template v-slot:item.info="{ headers, item }">
+
+    <template v-slot:item.info="{ item }">
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-icon small @click="dialog= true">mdi-information</v-icon>
+          <v-icon small @click="details(item)" v-on="on">mdi-information</v-icon>
         </template>
         <v-card class="pa-4">
           <v-card-title class="black--text">
@@ -55,36 +56,36 @@
             <span class="headline">Client's Details</span>
           </v-card-title>
           <v-divider color="light-blue lighten-2"></v-divider>
-          <v-list-item>
+          <v-list-item three-line>
             <v-list-item-content>
               <v-list-item-title>Name</v-list-item-title>
-              <v-list-item-subtitle>{{item.firstname + " "+ item.lastname}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{firstname+" "+lastname}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item two-line>
+          <v-list-item three-line>
             <v-list-item-content>
               <v-list-item-title>Email Address</v-list-item-title>
-              <v-list-item-subtitle>{{item.email}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{email}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item three-line>
             <v-list-item-content>
               <v-list-item-title>Contact Number</v-list-item-title>
-              <v-list-item-subtitle>{{item.contact}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{contact}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item three-line>
             <v-list-item-content>
               <v-list-item-title>Notes</v-list-item-title>
-              <v-list-item-subtitle>{{item.note}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{note}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog= false">close</v-btn>
+            <v-btn color="blue darken-1" @click="dialog=false">close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -95,6 +96,7 @@
     </template>
   </v-data-table>
 </template>
+
 <script>
 import {
   getAppointments,
@@ -108,11 +110,16 @@ export default {
   data() {
     return {
       // status:'On Queue',
+      firstname:"",
+      lastname:"",
+      email:"",
+      contact:"",
+      note:"",
       checked: false,
       expanded: [],
       clients: [],
       singleExpand: false,
-      label:"Process",
+      label: "Process",
       dialog: false,
       actions: [{ title: "Cancel" }, { title: "Delete" }],
       headers: [
@@ -143,9 +150,17 @@ export default {
     };
   },
   methods: {
-    menu(item, title){
-      if (title == "Delete"){
-        this.alertDelete(item)
+    details(item){
+      console.log(item)
+      this.firstname = item.firstname;
+      this.lastname = item.lastname;
+      this.email = item.email;
+      this.contact = item.contact;
+      this.note = item.note
+    },
+    menu(item, title) {
+      if (title == "Delete") {
+        this.alertDelete(item);
       }
     },
     deleteAppointment(item) {
@@ -164,16 +179,18 @@ export default {
         .catch(err => alert(err));
     },
 
-    action(item) {
+    actionBtn(item) {
+      console.log(item)
       const index = this.clients.indexOf(item);
       const client = this.clients[index];
-      if (client.action == "Process") {
+      if (item.status == "On Queue") {
         // client.check = false;
-        client.status = "Processing...";
-        client.action = "Done"
-      } else {
+        item.action = "Done"
+        item.status = "Processing...";
+        
+      } else if(item.action == "Done") {
         // client.check = true;
-        client.status = "Done";
+        item.status = "Done";
       }
       const data = { status: client.status, check: client.check };
       updateAppointment(data, client._id)
