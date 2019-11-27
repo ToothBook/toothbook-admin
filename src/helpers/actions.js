@@ -145,16 +145,16 @@ export function updateHours(data) {
 //         })
 //         .catch(err => Promise.reject(err.message))
 // }
-export function login(data) {
-    return axios.post(`${BASE_URL}/api/admin/login`, {
-            username: data.username,
-            password: data.password,
-        })
-        .then(response => {
-            return response.data
-        })
-        .catch(err => Promise.reject(err.message));
-}
+// export function login(data) {
+//     return axios.post(`${BASE_URL}/api/admin/login`, {
+//             username: data.username,
+//             password: data.password,
+//         })
+//         .then(response => {
+//             return response.data
+//         })
+//         .catch(err => Promise.reject(err.message));
+// }
 
 export function getuser(data) {
     return axios.get(`${BASE_URL}/api/admin/get`, { data })

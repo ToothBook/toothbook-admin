@@ -21,14 +21,14 @@ const router = new VueRouter({
                 path: '/login',
                 name: 'Login',
                 component: Login,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == true) {
-                        next("/admin");
-                    } else {
-                        next();
-                    }
+                // beforeEnter: (to, from, next) => {
+                //     if (store.state.authenticated == true) {
+                //         next("/admin");
+                //     } else {
+                //         next();
+                //     }
 
-                },
+                // },
             },
             {
                 path: "/",
@@ -40,62 +40,63 @@ const router = new VueRouter({
                 path: '/admin',
                 name: 'Dashboard',
                 component: Admin,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == false) {
-                        next("/login");
-                    } else {
-                        next();
-                    }
-                },
-                // meta: {
-                //     requiresAuth: true
-                // }
+                meta: {
+                    requiresAuth: true
+                }
+                // beforeEnter: (to, from, next) => {
+                //     if (store.state.authenticated == false) {
+                //         next("/login");
+                //     } else {
+                //         next();
+                //     }
+                // },
+
             },
             {
                 path: '/services',
                 name: 'services',
                 component: Services,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == false) {
-                        next("/login");
-                    } else {
-                        next();
-                    }
-                },
-                // meta: {
-                //     requiresAuth: true
-                // }
+                // beforeEnter: (to, from, next) => {
+                //     if (store.state.authenticated == false) {
+                //         next("/login");
+                //     } else {
+                //         next();
+                //     }
+                // },
+                meta: {
+                    requiresAuth: true
+                }
 
             },
             {
                 path: '/clients',
                 name: 'Clients',
                 component: Client,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == false) {
-                        next("/login");
-                    } else {
-                        next();
-                    }
-                },
-                // meta: {
-                //     requiresAuth: true
-                // }
+                // beforeEnter: (to, from, next) => {
+                //     if (store.state.authenticated == false) {
+                //         next("/login");
+                //     } else {
+                //         next();
+                //     }
+                // },
+                meta: {
+                    requiresAuth: true
+                }
             },
             {
                 path: '/account-settings',
                 name: 'Settings',
                 component: AccountSettings,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == false) {
-                        next("/login");
-                    } else {
-                        next();
-                    }
-                },
-                // meta: {
-                //     requiresAuth: true
-                // }
+                // beforeEnter: (to, from, next) => {
+                //     if (store.state.authenticated == false) {
+                //         next("/login");
+                //     } else {
+                //         next();
+                //     }
+                // },
+                meta: {
+                    requiresAuth: true
+                }
             },
             {
                 path: '/clients-form',

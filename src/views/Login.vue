@@ -52,7 +52,14 @@
           </v-card-text>
           <v-spacer />
           <v-card-actions class="justify-center">
-            <v-btn
+            <v-btn v-if="data == false"
+              class="px-10"
+              text
+              @click="register()"
+              text-center
+              color="light-blue darken-4"
+            >Login</v-btn>
+            <v-btn v-else
               class="px-10"
               text
               v-on:click="login()"
@@ -68,39 +75,68 @@
 </template>
  
 <script>
+import { getAccount } from "../helpers/actions.js";
 export default {
   name: "btnLogin",
   data() {
     return {
       username: "",
       password: "",
+      data: false
     };
   },
   methods: {
+    //   login() {
+    //     if (this.username == "admin" && this.password == "admin") {
+    //       sessionStorage.setItem("authenticated", true);
+    //       this.$store.commit("setAuthentication", true);
+    //       this.$router.push({ name: "Dashboard" });
+    //     } else {
+    //       alert("Invalid credentials");
+    //     }
+    //   }
+    // },
+    // props: {}
     login() {
-      if (this.username == "admin" && this.password == "admin") {
-        sessionStorage.setItem("authenticated", true);
-        this.$store.commit("setAuthentication", true);
-        this.$router.push({ name: "Dashboard" });
-      } else {
-        alert("Invalid credentials");
-      }
-    }
-  },
-  // props: {} 
-  adminLogin(){
-    let body = { username: this.username, password: this.password };
+      let body = { username: this.username, password: this.password };
       this.$store
         .dispatch("login", body)
-        .then((resp) => {
-          if (resp.data.status){
-            this.$router.push("/admin")
-          }else{
-            alert(resp.data.sms)
+        .then(resp => {
+          console.log(resp);
+          if (resp.data.status) {
+            this.$router.push("/admin");
+          } else {
+            alert(resp.data.sms);
+          }
+        })
+        .catch(err => console.log(err));
+    },
+
+    register() {
+      let body = { username: this.username, password: this.password };
+      this.$store
+        .dispatch("register", body)
+        .then(resp => {
+          if (resp.data.status) {
+            this.$router.push("/admin");
+          } else {
+            alert(resp.data.sms);
           }
         })
         .catch(err => console.log(err));
     }
+  },
+  mounted() {
+    getAccount()
+      .then(data => {
+        console.log(data.data);
+        if (data.data.length) {
+          this.data = true;
+        }
+        console.log(this.data);
+      })
+      .catch(err => alert(err));
+  }
 };
 </script>
 <style scoped>
@@ -111,7 +147,5 @@ h2 {
 #back {
   background-image: url(../assets/background.jpg);
   background-size: cover;
-
 }
-
 </style>
