@@ -65,6 +65,12 @@ app.get('/api/appointment/list', (req, res) => {
         return res.send({ data })
     })
 })
+app.get('/api/appointment/getDone', (req, res) => {
+    Appointment.find({ status: "Done" }).exec((err, data) => {
+        if (err) return res.status(404).send('Error while getting list of appointment!');
+        return res.send({ data })
+    })
+})
 
 app.post('/api/appointment/create', (req, res) => {
     console.log(req.body)
@@ -78,7 +84,8 @@ app.post('/api/appointment/create', (req, res) => {
         note: req.body.note,
         status: req.body.status,
         action: req.body.action,
-        dateOfSubmit: req.body.dateOfSubmit
+        dateOfSubmit: req.body.dateOfSubmit,
+        dateOfAccomplish: req.body.dateOfAccomplish
     });
     data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });

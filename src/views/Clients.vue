@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getAppointments, deleteAppointment } from "../helpers/actions";
+import { getAppmtDone, deleteAppointment } from "../helpers/actions";
 
 export default {
   name: "Clients",
@@ -40,6 +40,10 @@ export default {
           value: "contact"
         },
         {
+          text: "Date of Accomplish",
+          value: "dateOfAccomplish"
+        },
+        {
           text: "Actions",
           value: "action",
           sortable: false
@@ -51,22 +55,23 @@ export default {
   methods: {
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
-      const client = this.clients[index];
-      console.log(client);
-      deleteAppointment(client._id)
-        .then(() => this.$emit("deleteAppointment", client._id))
+      // const client = this.clients[index];
+      // console.log(client);
+      deleteAppointment(item._id)
+        .then(() => this.$emit("deleteAppointment", item._id))
         .catch(err => alert(err));
-      this.retrieveAppointments();
+      this.clients.splice(index, 1);
+        
     },
 
-    retrieveAppointments() {
-      getAppointments()
-        .then(data => ((this.clients = data.data), console.log(data.data)))
-        .catch(err => alert(err));
-    }
+    // retrieveAppointments() {
+    //   getAppointments()
+    //     .then(data => ((this.clients = data.data), console.log(data.data)))
+    //     .catch(err => alert(err));
+    // }
   },
   mounted() {
-    getAppointments()
+    getAppmtDone()
       .then(data => ((this.clients = data.data), console.log(data.data)))
       .catch(err => alert(err));
   }

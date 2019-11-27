@@ -88,6 +88,19 @@ export default {
     }
   },
   // props: {} 
+  adminLogin(){
+    let body = { username: this.username, password: this.password };
+      this.$store
+        .dispatch("login", body)
+        .then((resp) => {
+          if (resp.data.status){
+            this.$router.push("/admin")
+          }else{
+            alert(resp.data.sms)
+          }
+        })
+        .catch(err => console.log(err));
+    }
 };
 </script>
 <style scoped>

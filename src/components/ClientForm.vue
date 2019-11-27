@@ -183,7 +183,8 @@ export default {
         note: this.note,
         status: this.status,
         action: this.action,
-        dateOfSubmit: moment().format("MMMM Do YYYY, h:mm:ss a")
+        dateOfSubmit: moment().format("MMMM Do YYYY, h:mm:ss a"),
+        dateOfAccomplish: "None",
       };
       createAppointment(data)
         .then(data => {

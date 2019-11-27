@@ -36,6 +36,11 @@ export function getAppointments() {
         .then(response => response.data)
 }
 
+export function getAppmtDone() {
+    return axios.get(`${BASE_URL}/api/appointment/getDone`)
+        .then(response => response.data)
+}
+
 export function deleteAppointment(id) {
     return axios.post(`${BASE_URL}/api/appointment/delete/${id}`)
         .then(response => response.data)
@@ -53,7 +58,8 @@ export function createAppointment(data) {
             note: data.note,
             status: data.status,
             action: data.action,
-            dateOfSubmit: data.dateOfSubmit
+            dateOfSubmit: data.dateOfSubmit,
+            dateOfAccomplish: data.dateOfAccomplish
         })
         .then(response => {
             return response.data
