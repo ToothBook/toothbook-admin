@@ -7,14 +7,14 @@ import vuetify from './plugins/vuetify';
 
 Vue.use(VueSweetalert2);
 //Vue.config.productionTip = false
-import Axios from 'axios'
+// import Axios from 'axios'
 
-Vue.prototype.$http = Axios;
+// Vue.prototype.$http = Axios;
 Vue.config.productionTip = false;
-const token = localStorage.getItem("token");
-if (token) {
-    Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
-}
+// const token = localStorage.getItem("token");
+// if (token) {
+//     Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+// }
 
 new Vue({
     router,
