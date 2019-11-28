@@ -1,5 +1,6 @@
 <template>
   <v-app>
+       <carousel  v-if="$route.name!= 'Login' && $route.name!= 'Dashboard'&& $route.name!= 'services'&& $route.name!= 'Clients'&& $route.name!= 'Settings'"/>
     <v-app id="main" :style="{background: $vuetify.theme.themes[theme].background}">
     <Header v-if="$route.name!= 'Login' && $route.name!= 'ClientsForm'" />
     <v-content  class="mb-5">
@@ -13,6 +14,7 @@
 /*eslint no-console: "error"*/
 
 import Header from "@/components/Header";
+import carousel from '@/components/Carousel'
 export default {
   name: "App",
   computed:{
@@ -24,6 +26,7 @@ export default {
     }
   },
   components: {
+    carousel,
     Header
   },
   methods: {
