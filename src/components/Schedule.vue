@@ -138,7 +138,7 @@ export default {
       if (this.add === true) {
         this.create();
       } else {
-        this.update();
+        this.alertUpdate();
       }
     },
 
@@ -152,6 +152,13 @@ export default {
           this.close();
         })
         .catch(err => alert(err.error));
+        Swal.fire({
+            title: "Added!",
+            text: "Service is successfully added.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
     },
 
     deleteService(item) {
@@ -162,6 +169,7 @@ export default {
         .then(() => this.$emit("deleteService"))
         .catch(err => alert(err));
       this.services.splice(index, 1);
+      
     },
 
     update() {
@@ -196,6 +204,29 @@ export default {
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+    },
+    alertUpdate() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.update();
+          Swal.fire({
+            title: "Updated!",
+            text: "Service has been updated.",
             type: "success",
             showConfirmButton: false,
             timer: 1500
