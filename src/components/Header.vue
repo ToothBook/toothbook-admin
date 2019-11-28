@@ -112,20 +112,20 @@ export default {
     }
   },
   methods: {
-    // logout() {
-    //     sessionStorage.removeItem("authenticated")
-    //     this.$router.go({ name: 'Login' }).catch(err => {
-    //   console.log(err)
-    //   })
-    // },
-    logout: function() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/");
-      //   this.$router.go({ name: 'Login' }).catch(err => {
-      // console.log(err)
-      // });
-    })
-  },
+    logout() {
+        sessionStorage.removeItem("authenticated")
+        this.$router.go({ name: 'Login' }).catch(err => {
+      console.log(err)
+      })
+    },
+    // logout: function() {
+    //   this.$store.dispatch("logout").then(() => {
+    //     this.$router.push("/");
+    //   //   this.$router.go({ name: 'Login' }).catch(err => {
+    //   // console.log(err)
+    //   // });
+    // })
+  // },
   }
 };
 </script>

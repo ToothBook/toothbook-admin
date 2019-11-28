@@ -52,14 +52,14 @@
           </v-card-text>
           <v-spacer />
           <v-card-actions class="justify-center">
-            <v-btn v-if="data == false"
+            <!-- <v-btn v-if="data == false"
               class="px-10"
               text
               @click="register()"
               text-center
               color="light-blue darken-4"
-            >Login</v-btn>
-            <v-btn v-else
+            >Login</v-btn> -->
+            <v-btn
               class="px-10"
               text
               v-on:click="login()"
@@ -86,31 +86,31 @@ export default {
     };
   },
   methods: {
-    //   login() {
-    //     if (this.username == "admin" && this.password == "admin") {
-    //       sessionStorage.setItem("authenticated", true);
-    //       this.$store.commit("setAuthentication", true);
-    //       this.$router.push({ name: "Dashboard" });
-    //     } else {
-    //       alert("Invalid credentials");
-    //     }
-    //   }
-    // },
-    // props: {}
-    login() {
-      let body = { username: this.username, password: this.password };
-      this.$store
-        .dispatch("login", body)
-        .then(resp => {
-          console.log(resp);
-          if (resp.data.status) {
-            this.$router.push("/admin");
-          } else {
-            alert(resp.data.sms);
-          }
-        })
-        .catch(err => console.log(err));
+      login() {
+        if (this.username == "admin" && this.password == "admin") {
+          sessionStorage.setItem("authenticated", true);
+          this.$store.commit("setAuthentication", true);
+          this.$router.push({ name: "Dashboard" });
+        } else {
+          alert("Invalid credentials");
+        }
+      
     },
+    // props: {}
+    // login() {
+    //   let body = { username: this.username, password: this.password };
+    //   this.$store
+    //     .dispatch("login", body)
+    //     .then(resp => {
+    //       console.log(resp);
+    //       if (resp.data.status) {
+    //         this.$router.push("/admin");
+    //       } else {
+    //         alert(resp.data.sms);
+    //       }
+    //     })
+    //     .catch(err => console.log(err));
+    // },
 
     register() {
       let body = { username: this.username, password: this.password };

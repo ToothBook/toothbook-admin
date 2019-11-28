@@ -94,8 +94,8 @@ export function getAccount() {
         .then(response => response.data)
 }
 
-export function deleteAccount(id) {
-    return axios.post(`${BASE_URL}/api/account/delete/${id}`)
+export function loginAdmin(username) {
+    return axios.post(`${BASE_URL}/api/admin/login/${username}`)
         .then(response => response.data)
         .catch(err => Promise.reject(err.message));
 }

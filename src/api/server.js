@@ -123,10 +123,9 @@ app.get('/api/account/retrieve', (req, res) => {
     })
 })
 
-app.post('/api/account/create', (req, res) => {
+app.post('/api/admin/login', (req, res) => {
     console.log(req.body)
-    const data = new AdminAccnt({ username: req.body.username, password: req.body.password });
-    data.save((err) => {
+    User.findOne({ username: username }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
     });
@@ -176,13 +175,6 @@ app.get('/api/hours/get', (req, res) => {
 //     })
 // })
 
-app.post('/api/hours/update', (req, res) => {
-    console.log(req.body)
-    TotalHours.findOneAndUpdate({}, req.body.data, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, data) => {
-        if (err) return res.status(404).send({ error: err.message });
-        return res.send({ message: 'Service is successfully updated', data })
-    })
-})
 
 // app.get('/api/hours/getOne', (req, res) => {
 //     TotalHours.findOne({hoursRequested:req.body} , (err, data) => {
@@ -193,50 +185,55 @@ app.post('/api/hours/update', (req, res) => {
 // })
 
 //login
-// app.post('/api/admin/login', (req, res) => {
-//     login(req.body, res)
-// })
-app.post("/api/admin/login", (req, res) => {
-    console.log(req.body);
-    var username = req.body.username
-    var password = req.body.password
-    User.findOne({ username: username }, function(err, data) {
-        if (err) {
-            return res.send(err)
-        }
-        if (data != null) {
-            console.log(password)
-                // var match = bcrypt.compareSync(password, data.password)
-            console.log(data.password)
+app.post('/api/admin/login', (req, res) => {
+    console.log(req.body)
+    const data = new User({ username: req.body.username, password: req.body.password });
+    data.save((err) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ data });
+    });
+})
+// app.post("/api/admin/login", (req, res) => {
+//     console.log(req.body);
+//     var username = req.body.username
+//     var password = req.body.password
+//     User.findOne({ username: username }, function(err, data) {
+//         if (err) {
+//             return res.send(err)
+//         }
+//         if (data != null) {
+//             console.log(password)
+//                 // var match = bcrypt.compareSync(password, data.password)
+//             console.log(data.password)
 
-            if (password === data.password) {
-                var acc_token = jwt.sign({ data }, "token1234", { expiresIn: "12h" })
-                console.log(acc_token)
-                return res.send({
-                    status: true,
-                    auth: true,
-                    user: data,
-                    token: acc_token,
-                    sms: "success"
-                })
-            } else {
-                return res.send({
-                    status: false,
-                    auth: false,
-                    sms: "Incorrect Password!!",
-                    token: null,
-                    user: null
-                })
-            }
-        }
+//             if (password === data.password) {
+//                 var acc_token = jwt.sign({ data }, "token1234", { expiresIn: "12h" })
+//                 console.log(acc_token)
+//                 return res.send({
+//                     status: true,
+//                     auth: true,
+//                     user: data,
+//                     token: acc_token,
+//                     sms: "success"
+//                 })
+//             } else {
+//                 return res.send({
+//                     status: false,
+//                     auth: false,
+//                     sms: "Incorrect Password!!",
+//                     token: null,
+//                     user: null
+//                 })
+//             }
+//         }
 
-        return res.send({
-            status: false,
-            auth: false,
-            sms: "Username Not Found!!"
-        })
-    })
-});
+//         return res.send({
+//             status: false,
+//             auth: false,
+//             sms: "Username Not Found!!"
+//         })
+//     })
+// });
 
 app.get("/api/admin/get", (req, res) => {
     login.getuser(req, res)

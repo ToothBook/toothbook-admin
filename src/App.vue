@@ -21,9 +21,9 @@ export default {
     theme(){
       return (this.$vuetify.theme.dark) ? 'dark' : 'light'
     },
-     isLoggedIn: function() {
-      return this.$store.getters.isLoggedIn;
-    }
+    //  isLoggedIn: function() {
+    //   return this.$store.getters.isLoggedIn;
+    // }
   },
   components: {
     carousel,
@@ -37,11 +37,11 @@ export default {
         return true;
       }
     },
-    logout: function() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/");
-      });
-    },
+    // logout: function() {
+    //   this.$store.dispatch("logout").then(() => {
+    //     this.$router.push("/");
+    //   });
+    // },
   }
 };
 </script>
