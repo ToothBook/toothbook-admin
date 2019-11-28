@@ -28,7 +28,8 @@
         </v-menu>
     </template>
     <template v-slot:item.status="{ item }">
-        <span>{{item.status}}</span>
+      <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+        <!-- <span>{{item.status}}</span> -->
     </template>
 
     <template v-slot:item.info="{ item }">
@@ -165,6 +166,11 @@ export default {
     };
   },
   methods: {
+    getColor (status) {
+        if (status == "On Queue") return 'red'
+        else if (status == "Processing...") return 'orange'
+        else return 'green'
+      },
     details(item) {
       console.log(item);
       this.firstname = item.firstname;
@@ -205,7 +211,9 @@ export default {
         // client.check = true;
         item.status = "Done";
         item.dateOfAccomplish = moment().format("MMMM Do YYYY, h:mm:ss a")
-
+        // this.disable = true;
+      }
+      if(item.status == "Done"){
         // this.disable = true;
       }
       const data = {

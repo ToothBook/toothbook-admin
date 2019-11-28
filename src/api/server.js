@@ -13,7 +13,7 @@ const Service = require('./Services');
 const Appointment = require('./Appointment');
 const AdminAccnt = require('./AdminAccount')
 const TotalHours = require('./TotalHours')
-const User = require('../api/AdminAccount')
+    // const User = require('../api/AdminAccount')
 
 
 //modules
@@ -125,25 +125,35 @@ app.get('/api/account/retrieve', (req, res) => {
 
 app.post('/api/admin/login', (req, res) => {
     console.log(req.body)
-    User.findOne({ username: username }, (err, data) => {
+    AdminAccnt.findOne({ username: req.body.data }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
     });
 });
 
-app.post('/api/account/update/:id', (req, res) => {
-    console.log(req.body)
-    AdminAccnt.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
-        if (err) return res.status(404).send({ error: err.message });
-        return res.send({ message: 'Service is successfully updated', data })
+// app.post('/api/account/update/:id', (req, res) => {
+//     console.log(req.body)
+//     AdminAccnt.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+//         if (err) return res.status(404).send({ error: err.message });
+//         return res.send({ message: 'Service is successfully updated', data })
 
-    })
-})
+//     })
+// })
 
 app.post('/api/account/delete/:id', (req, res) => {
     AdminAccnt.findByIdAndRemove(req.params.id, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully deleted!', data })
+    })
+})
+
+app.put('/api/admin/update/:id', (req, res) => {
+    console.log(req.body)
+    AdminAccnt.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, data) => {
+        console.log(data)
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+
     })
 })
 
@@ -166,14 +176,13 @@ app.get('/api/hours/get', (req, res) => {
     })
 })
 
-// app.post('/api/hours/update/:id', (req, res) => {
-//     console.log(req.body)
-//     TotalHours.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
-//         if (err) return res.status(404).send({ error: err.message });
-//         return res.send({ message: 'Service is successfully updated', data })
-
-//     })
-// })
+app.post('/api/hours/update/', (req, res) => {
+    console.log(req.body)
+    TotalHours.updateMany({}, req.body, { multi: true }, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+    })
+})
 
 
 // app.get('/api/hours/getOne', (req, res) => {
@@ -185,14 +194,14 @@ app.get('/api/hours/get', (req, res) => {
 // })
 
 //login
-app.post('/api/admin/login', (req, res) => {
-    console.log(req.body)
-    const data = new User({ username: req.body.username, password: req.body.password });
-    data.save((err) => {
-        if (err) return res.status(404).send({ error: err.message });
-        return res.send({ data });
-    });
-})
+// app.post('/api/admin/login', (req, res) => {
+//         console.log(req.body)
+//         const data = new User({ username: req.body.username, password: req.body.password });
+//         data.save((err) => {
+//             if (err) return res.status(404).send({ error: err.message });
+//             return res.send({ data });
+//         });
+//     })
 // app.post("/api/admin/login", (req, res) => {
 //     console.log(req.body);
 //     var username = req.body.username

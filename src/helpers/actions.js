@@ -94,8 +94,8 @@ export function getAccount() {
         .then(response => response.data)
 }
 
-export function loginAdmin(username) {
-    return axios.post(`${BASE_URL}/api/admin/login/${username}`)
+export function loginAdmin(data) {
+    return axios.post(`${BASE_URL}/api/admin/login/`, { data })
         .then(response => response.data)
         .catch(err => Promise.reject(err.message));
 }
@@ -108,8 +108,16 @@ export function createAccount(data) {
         .catch(err => Promise.reject(err.message))
 }
 
+export function registerAdmin(data) {
+    return axios.post(`${BASE_URL}/api/admin/register/`, { username: data.username, password: data.password })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
+}
+
 export function updateAccount(data, id) {
-    return axios.post(`${BASE_URL}/api/account/update/${id}`, { data })
+    return axios.put(`${BASE_URL}/api/admin/update/${id}`, data)
         .then(response => {
             return response.data
         })
@@ -131,7 +139,7 @@ export function createHours(data) {
 }
 
 export function updateHours(data) {
-    return axios.post(`${BASE_URL}/api/hours/update/`, { data })
+    return axios.post(`${BASE_URL}/api/hours/update/`, data)
         .then(response => {
             return response.data
         })
