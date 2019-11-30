@@ -9,6 +9,10 @@
       <template v-slot:item.action="{ item }">
         <v-icon small @click="deleteAppointment(item)">mdi-delete</v-icon>
       </template>
+      <template v-slot:item.status="{ item }">
+      <v-chip color="green" dark>{{ item.status }}</v-chip>
+        <!-- <span>{{item.status}}</span> -->
+    </template>
     </v-data-table>
   </v-card>
 </template>
@@ -42,6 +46,10 @@ export default {
         {
           text: "Date of Accomplish",
           value: "dateOfAccomplish"
+        },
+        {
+          text: "Status",
+          value: "status"
         },
         {
           text: "Actions",

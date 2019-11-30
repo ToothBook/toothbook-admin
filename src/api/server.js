@@ -253,7 +253,7 @@ app.post("api/admin/delete", (req, res) => {
 })
 
 app.post("/api/admin/register", (req, res) => {
-    const data = new User({ username: req.body.username, password: req.body.password });
+    const data = new AdminAccnt({ username: req.body.username, password: req.body.password });
     data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
@@ -261,7 +261,7 @@ app.post("/api/admin/register", (req, res) => {
 })
 
 
-const PORT = 3000;
+const PORT = 2000;
 
 app.listen(PORT)
 console.log('api running on port: ' + PORT)

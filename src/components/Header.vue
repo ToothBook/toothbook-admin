@@ -4,7 +4,7 @@
     <v-app-bar color="light-blue accent-4" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>TOOTHBOOK</v-toolbar-title>
+      <v-toolbar-title style="font-family: Cursive">TOOTHBOOK</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
@@ -38,7 +38,7 @@
         </v-list-item>
       </template>
       <v-divider></v-divider>
-      <v-list nav>
+      <v-list nav shaped>
         <v-list-item-group v-model="group" active-class="light-blue--text text--accent-4">
           <v-list-item v-for="(item, index) in items" :key="index" :to="item.link">
             <v-list-item-icon>

@@ -62,7 +62,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="dialog1= false">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text :disabled="!valid" @click="updateAdmin">Save</v-btn>
+                  <v-btn color="blue darken-1" text :disabled="!valid" @click="alertUpdate">Save</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -120,7 +120,7 @@
                     color="blue darken-1"
                     text
                     :disabled="!valid"
-                    @click="updateTotalHours"
+                    @click="alertUpdateTime"
                   >Save</v-btn>
                 </v-card-actions>
               </v-card>
@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import {
   updateAccount,
   updateHours,
@@ -172,7 +173,6 @@ export default {
           this.dialog1= false
           this.username = data.data[0].username;
           this.password = data.data[0].password;
-          
         })
         .catch(err => console.log(err.error));
     },
@@ -190,10 +190,57 @@ export default {
         })
         .catch(err => alert(err.error));
     },
-    close() {
-      this.dialog2 = false;
-      console.log(this.data);
-      this.hours = this.data;
+    // close() {
+    //   this.dialog2 = false;
+    //   console.log(this.data);
+    //   this.hours = this.data;
+    // },
+
+    alertUpdate() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.updateAdmin();
+          Swal.fire({
+            title: "Updated!",
+            text: "Account has been updated.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+    },
+    alertUpdateTime() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.updateTotalHours();
+          Swal.fire({
+            title: "Updated!",
+            text: "Time has been updated.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
     }
   },
   mounted() {

@@ -52,15 +52,15 @@
             </v-card-text>
             <v-spacer />
             <v-card-actions class="justify-center">
-              <v-btn v-if="data == false"
+              <v-btn 
               class="px-10"
               text
               @click="register()"
               text-center
-              :disabled="disable"
+              v-if="!disable"
               color="light-blue darken-4"
               >register</v-btn>
-              <v-btn
+              <v-btn v-if="!loginbtn"
                 class="px-10"
                 text
                 v-on:click="login()"
@@ -84,7 +84,8 @@ export default {
       username: "",
       password: "",
       data: false,
-      disable: false
+      disable: false,
+      loginbtn: true,
     };
   },
   methods: {
@@ -144,6 +145,7 @@ export default {
         console.log(data.data);
         if (data.data.length) {
           this.disable = true;
+          this.loginbtn = false
         }
         console.log(this.data);
       })

@@ -1,5 +1,5 @@
 <template>
-<v-data-table :headers="headers" :items="clients" :single-expand="singleExpand" :expanded.sync="expanded" item-key="firstname" class="elevation-5 ma-5">
+<v-data-table :headers="headers" :items="list" :single-expand="singleExpand" :expanded.sync="expanded" item-key="firstname" class="elevation-5 ma-5">
     <template v-slot:top>
         <v-toolbar flat class="ma-5 mb-12 pa-5">
             <v-spacer></v-spacer>
@@ -9,7 +9,7 @@
     </template>
     <template v-slot:item.action="{ item }">
         <!-- <v-icon small @click="alertDelete(item)">mdi-delete</v-icon> -->
-        <v-btn x-small color="secondary" :disabled="disable" dark @click="actionBtn(item)">{{item.action}}</v-btn>
+        <v-btn x-small color="secondary" :disabled="item.status == 'Done'"  dark @click="actionBtn(item)">{{item.action}}</v-btn>
     </template>
     <template v-slot:item.menu="{ item }">
         <!-- <v-icon small @click="alertDelete(item)">mdi-delete</v-icon> -->
@@ -45,36 +45,36 @@
                     <span class="headline">Client's Details</span>
                 </v-card-title>
                 <v-divider color="light-blue lighten-2"></v-divider>
-                <v-list-item three-line>
+                <v-list-item two-line>
                     <v-list-item-content>
-                        <v-list-item-title>Name</v-list-item-title>
-                        <v-list-item-subtitle>{{firstname+" "+lastname}}</v-list-item-subtitle>
+                        <v-list-item-title>{{firstname+" "+lastname}}</v-list-item-title>
+                        <v-list-item-subtitle>Name</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item three-line>
+                <v-list-item two-line>
                     <v-list-item-content>
-                        <v-list-item-title>Email Address</v-list-item-title>
-                        <v-list-item-subtitle>{{email}}</v-list-item-subtitle>
+                        <v-list-item-title>{{email}}</v-list-item-title>
+                        <v-list-item-subtitle>Email Address</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item three-line>
+                <v-list-item two-line>
                     <v-list-item-content>
-                        <v-list-item-title>Contact Number</v-list-item-title>
-                        <v-list-item-subtitle>{{contact}}</v-list-item-subtitle>
+                        <v-list-item-title>{{contact}}</v-list-item-title>
+                        <v-list-item-subtitle>Contact Number</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item three-line>
+                <v-list-item two-line>
                     <v-list-item-content>
-                        <v-list-item-title>Notes</v-list-item-title>
-                        <v-list-item-subtitle>{{note}}</v-list-item-subtitle>
+                        <v-list-item-title>{{note}}</v-list-item-title>
+                        <v-list-item-subtitle>Notes</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" @click="dialog=false">close</v-btn>
+                    <v-btn dark color="light-blue accent-3" @click="dialog=false">close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -94,6 +94,7 @@ import {
 } from "../helpers/actions";
 import moment from "moment";
 import Swal from "sweetalert2";
+import { setTimeout } from 'timers';
 
 export default {
   name: "Dashboard",
@@ -162,10 +163,21 @@ export default {
           text: "",
           value: "info"
         }
-      ]
+      ],
+      list:[]
     };
   },
   methods: {
+    filter(){
+      this.clients.forEach(client => {
+        console.log(client.status)
+        if (client.status != "Done") {
+          console.log("tests")
+          this.list.push(client)
+        }
+        console.log(this.list)
+      });
+    },
     getColor (status) {
         if (status == "On Queue") return 'red'
         else if (status == "Processing...") return 'orange'
@@ -183,6 +195,7 @@ export default {
       if (title == "Delete") {
         this.alertDelete(item);
       }
+      console.log(this.list)
     },
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
@@ -214,7 +227,9 @@ export default {
         // this.disable = true;
       }
       if(item.status == "Done"){
-        // this.disable = true;
+        setTimeout(() => {
+          this.list.splice(this.list.indexOf(item), 1);
+        },5000)
       }
       const data = {
         status: item.status,
@@ -257,8 +272,7 @@ export default {
 
   mounted() {
     getAppointments()
-      .then(data => ((this.clients = data.data), console.log(data.data)))
-
+      .then(data => ((this.clients = data.data),this.filter(), console.log(data.data)))
       .catch(err => alert(err));
   }
 };
