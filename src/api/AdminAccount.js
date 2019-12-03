@@ -6,14 +6,6 @@ const AdminSchema = Schema({
     password: { type: String, required: true },
 })
 
-// AdminSchema.pre("save", function(next) {
-//     if (!this.isModified("password")) {
-//         return next();
-//     }
-//     this.password = bcrypt.hashSync(this.password, 10);
-//     next();
-// });
-
 const AdminAccnt = mongoose.model("AdminAccnt", AdminSchema);
 
 module.exports = AdminAccnt;

@@ -1,15 +1,13 @@
 <template>
-  <!-- <div>  -->
-
   <v-app id="back">
     <v-container class="fill-height ml-12" fluid>
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md7 lg5>
           <v-card class="mx-auto text-center pa-5" max-width="500px" shaped raised>
             <v-avatar tile size="62">
-              <img src="../assets/totii.png" alt="Vuetify.js" height="500" />
+              <img src="../assets/totii.png" alt="Vuetify.js" height="500">
             </v-avatar>
-              <h2 class="text-center">Admin Login</h2>
+            <h2 class="text-center">Admin Login</h2>
             <v-card-text>
               <v-form>
                 <v-text-field
@@ -21,7 +19,6 @@
                   clearable
                   type="text"
                 />
-
                 <v-text-field
                   v-model="password"
                   id="password"
@@ -34,7 +31,7 @@
                 />
               </v-form>
             </v-card-text>
-            <v-spacer />
+            <v-spacer/>
             <v-card-actions class="justify-center">
               <v-btn
                 class="px-10"
@@ -93,22 +90,6 @@ export default {
         })
         .catch(err => alert(err.error));
     },
-    // props: {}
-    // login() {
-    //   let body = { username: this.username, password: this.password };
-    //   this.$store
-    //     .dispatch("login", body)
-    //     .then(resp => {
-    //       console.log(resp);
-    //       if (resp.data.status) {
-    //         this.$router.push("/admin");
-    //       } else {
-    //         alert(resp.data.sms);
-    //       }
-    //     })
-    //     .catch(err => console.log(err));
-    // },
-
     register() {
       let data = {
         username: this.username,
@@ -122,7 +103,6 @@ export default {
           this.$router.push({
             name: "Dashboard"
           });
-          console.log(data.data);
         })
         .catch(err => alert(err.error));
     }
@@ -130,12 +110,10 @@ export default {
   mounted() {
     getAccount()
       .then(data => {
-        console.log(data.data);
         if (data.data.length) {
           this.disable = true;
           this.loginbtn = false;
         }
-        console.log(this.data);
       })
       .catch(err => alert(err));
   }

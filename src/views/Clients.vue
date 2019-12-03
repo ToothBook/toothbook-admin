@@ -11,7 +11,6 @@
       </template>
       <template v-slot:item.status="{ item }">
       <span class="green--text font-weight-bold">{{ item.status }}</span>
-        <!-- <span>{{item.status}}</span> -->
     </template>
     </v-data-table>
   </v-card>
@@ -63,24 +62,15 @@ export default {
   methods: {
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
-      // const client = this.clients[index];
-      // console.log(client);
       deleteAppointment(item._id)
         .then(() => this.$emit("deleteAppointment", item._id))
         .catch(err => alert(err));
       this.clients.splice(index, 1);
-        
     },
-
-    // retrieveAppointments() {
-    //   getAppointments()
-    //     .then(data => ((this.clients = data.data), console.log(data.data)))
-    //     .catch(err => alert(err));
-    // }
   },
   mounted() {
     getAppmtDone()
-      .then(data => ((this.clients = data.data), console.log(data.data)))
+      .then(data => ((this.clients = data.data)))
       .catch(err => alert(err));
   }
 };

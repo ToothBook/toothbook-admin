@@ -1,89 +1,93 @@
 <template>
-<v-data-table :headers="headers" :items="list" :single-expand="singleExpand" :expanded.sync="expanded" item-key="firstname" class="elevation-5 ma-5">
+  <v-data-table
+    :headers="headers"
+    :items="list"
+    :single-expand="singleExpand"
+    :expanded.sync="expanded"
+    item-key="firstname"
+    class="elevation-5 ma-5"
+  >
     <template v-slot:top>
-        <v-toolbar flat class="ma-5 mb-12 pa-5">
-            <v-spacer></v-spacer>
-            <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
-            <v-spacer></v-spacer>
-        </v-toolbar>
+      <v-toolbar flat class="ma-5 mb-12 pa-5">
+        <v-spacer></v-spacer>
+        <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
-        <!-- <v-icon small @click="alertDelete(item)">mdi-delete</v-icon> -->
-        <v-btn x-small color="secondary" :disabled="item.status == 'Done'"  dark @click="actionBtn(item)">{{item.action}}</v-btn>
+      <v-btn
+        x-small
+        color="secondary"
+        :disabled="item.status == 'Done'"
+        dark
+        @click="actionBtn(item)"
+      >{{item.action}}</v-btn>
     </template>
     <template v-slot:item.menu="{ item }">
-        <!-- <v-icon small @click="alertDelete(item)">mdi-delete</v-icon> -->
-        <v-menu bottom left>
-            <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-            </template>
-
-            <v-list>
-                <v-list-item v-for="(action, i) in actions" :key="i" @click="menu(item, action.title)">
-                    <v-list-item-title>{{ action.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(action, i) in actions" :key="i" @click="menu(item, action.title)">
+            <v-list-item-title>{{ action.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </template>
     <template v-slot:item.status="{ item }">
       <span :class="getColor(item.status)" dark>{{ item.status }}</span>
-        <!-- <span>{{item.status}}</span> -->
     </template>
-
     <template v-slot:item.info="{ item }">
-        <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{ on }">
-                <v-icon small @click="details(item)" v-on="on">mdi-information</v-icon>
-            </template>
-            <v-card class="pa-4">
-                <v-card-title class="black--text">
-                    <v-list-item-avatar tile right size="62">
-                        <img src="../assets/toothbook-logo5.png" />
-                    </v-list-item-avatar>
-                    <span class="headline">Client's Details</span>
-                </v-card-title>
-                <v-divider color="light-blue lighten-2"></v-divider>
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>{{firstname+" "+lastname}}</v-list-item-title>
-                        <v-list-item-subtitle>Name</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>{{email}}</v-list-item-title>
-                        <v-list-item-subtitle>Email Address</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>{{contact}}</v-list-item-title>
-                        <v-list-item-subtitle>Contact Number</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>{{note}}</v-list-item-title>
-                        <v-list-item-subtitle>Notes</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn dark color="light-blue accent-3" @click="dialog=false">close</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <!-- <td :colspan="headers.length">{{item.note}}</td> -->
+      <v-dialog v-model="dialog" max-width="500px">
+        <template v-slot:activator="{ on }">
+          <v-icon small @click="details(item)" v-on="on">mdi-information</v-icon>
+        </template>
+        <v-card class="pa-4">
+          <v-card-title class="black--text">
+            <v-list-item-avatar tile right size="62">
+              <img src="../assets/toothbook-logo5.png">
+            </v-list-item-avatar>
+            <span class="headline">Client's Details</span>
+          </v-card-title>
+          <v-divider color="light-blue lighten-2"></v-divider>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>{{firstname+" "+lastname}}</v-list-item-title>
+              <v-list-item-subtitle>Name</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>{{email}}</v-list-item-title>
+              <v-list-item-subtitle>Email Address</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>{{contact}}</v-list-item-title>
+              <v-list-item-subtitle>Contact Number</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>{{note}}</v-list-item-title>
+              <v-list-item-subtitle>Notes</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn dark color="light-blue accent-3" @click="dialog=false">close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
     <template v-slot:item.date="{ item }">
-        <span>{{item.date.substr(0, 10)}}</span>
+      <span>{{item.date.substr(0, 10)}}</span>
     </template>
-</v-data-table>
+  </v-data-table>
 </template>
 
 <script>
@@ -94,13 +98,12 @@ import {
 } from "../helpers/actions";
 import moment from "moment";
 import Swal from "sweetalert2";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 
 export default {
   name: "Dashboard",
   data() {
     return {
-      // status:'On Queue',
       firstname: "",
       lastname: "",
       email: "",
@@ -143,8 +146,6 @@ export default {
           text: "Requested Dental Service",
           value: "reason"
         },
-        // { text: "Email Address", value: "email" },
-        // { text: "Contact Number", value: "contact" },
         {
           text: "Status",
           value: "status",
@@ -164,27 +165,24 @@ export default {
           value: "info"
         }
       ],
-      list:[]
+      list: []
     };
   },
   methods: {
-    filter(){
+    filter() {
       this.clients.forEach(client => {
-        console.log(client.status)
         if (client.status != "Done") {
-          console.log("tests")
-          this.list.push(client)
+          this.list.push(client);
         }
-        console.log(this.list)
       });
     },
-    getColor (status) {
-        if (status == "On Queue") return 'red--text font-weight-bold'
-        else if (status == "Processing...") return 'orange--text font-weight-bold'
-        else return 'green--text font-weight-bold'
-      },
+    getColor(status) {
+      if (status == "On Queue") return "red--text font-weight-bold";
+      else if (status == "Processing...")
+        return "orange--text font-weight-bold";
+      else return "green--text font-weight-bold";
+    },
     details(item) {
-      console.log(item);
       this.firstname = item.firstname;
       this.lastname = item.lastname;
       this.email = item.email;
@@ -195,12 +193,10 @@ export default {
       if (title == "Delete") {
         this.alertDelete(item);
       }
-      console.log(this.list)
     },
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
       const client = this.clients[index];
-      console.log(client);
       deleteAppointment(client._id)
         .then(() => this.$emit("deleteAppointment", client._id))
         .catch(err => alert(err));
@@ -209,27 +205,22 @@ export default {
 
     retrieveAppointments() {
       getAppointments()
-        .then(data => ((this.clients = data.data), console.log(data.data)))
+        .then(data => (this.clients = data.data))
         .catch(err => alert(err));
     },
 
     actionBtn(item) {
-      // const index = this.clients.indexOf(item);
-      // const client = this.clients[index];
       if (item.status === "On Queue") {
-        // client.check = false;
         item.action = "Done";
         item.status = "Processing...";
       } else if (item.action == "Done") {
-        // client.check = true;
         item.status = "Done";
-        item.dateOfAccomplish = moment().format("MMMM Do YYYY, h:mm:ss a")
-        // this.disable = true;
+        item.dateOfAccomplish = moment().format("MMMM Do YYYY, h:mm:ss a");
       }
-      if(item.status == "Done"){
+      if (item.status == "Done") {
         setTimeout(() => {
           this.list.splice(this.list.indexOf(item), 1);
-        },2000)
+        }, 2000);
       }
       const data = {
         status: item.status,
@@ -239,9 +230,6 @@ export default {
       updateAppointment(data, item._id)
         .then(data => {
           this.$emit("updateService", data.data);
-          console.log(data.data);
-          // Object.assign(this.clients[this.editedIndex], data.data)
-          // this.close()
         })
         .catch(err => alert(err.error));
     },
@@ -272,7 +260,7 @@ export default {
 
   mounted() {
     getAppointments()
-      .then(data => ((this.clients = data.data),this.filter(), console.log(data.data)))
+      .then(data => ((this.clients = data.data), this.filter()))
       .catch(err => alert(err));
   }
 };

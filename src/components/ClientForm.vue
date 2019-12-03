@@ -11,13 +11,6 @@
         </v-avatar>
           <span class="headline">Please provide the following:</span>
         </v-card-title>
-        <!-- <v-toolbar> -->
-        <!-- color="primary" dark flat -->
-        <!-- <img src="@/assets/totii.png" style="width:50px;height:auto" />
-                <v-spacer />
-                <v-toolbar-title>Please fill-in the following information</v-toolbar-title>
-                <v-spacer />
-        </v-toolbar>-->
         <v-card-text>
           <v-container class="scrollbar" id="style-3">
             <v-form class="force-overflow" dark ref="form" v-model="valid" :lazy-validation="lazy">
@@ -113,7 +106,6 @@ export default {
     lastname: "",
     contact: "",
     hours: [],
-    // dateOfSubmit: this.moment(date),
     nameRules: [
       v => !!v || "Name is required",
       v => (v && v.length <= 50) || "Name must be less than 50 characters"
@@ -146,8 +138,6 @@ export default {
       const index = this.services.map(e => e.name).indexOf(this.selectService);
       const time = this.services[index].time;
       const date = `${this.date}T00:00:00.000Z`;
-      console.log(list);
-
       if (!list.some(item => item.date == date)) {
         this.dataHours[0].hoursRequested.push({ date: date, minutes: time });
       } else {
@@ -160,30 +150,24 @@ export default {
           list[indexDate].minutes += time;
         }
       }
-      console.log(list);
     },
 
     submitHours() {
-      // console.log(this.dataHours[0]);
       updateHours(this.dataHours[0])
         .then(data => {
           this.$emit("updateHours", data.data);
-          // console.log(data.data)
         })
         .catch(err => console.log(err.error));
     },
     alertDisplay() {
-      // this.$swal('Heading', 'this is a Heading', 'OK');
       Swal.fire({
         type: "error",
         title: "Oops...",
         text: "The date is not available anymore!"
-        // footer: '<a href>Why do I have this issue?</a>'
       });
     },
 
     validate() {
-      // this.submitRequest()
       if (this.$refs.form.validate()) {
         this.disableSubmit = true;
         this.submitRequest();
@@ -192,8 +176,6 @@ export default {
         this.checkbox = false;
         this.snackbar = true;
         this.$refs.form.reset();
-        // this.submitRequest();
-        // this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = null;
       }
     },
 
@@ -269,7 +251,6 @@ h1 {
   margin-right: 100px;
 }
 .scrollbar {
-  /* margin-left: 30px; */
   float: left;
   height: 500px;
   background: white;
