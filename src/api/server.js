@@ -3,8 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+// const bcrypt = require('bcryptjs');
+// const jwt = require('jsonwebtoken')
 
 
 
@@ -19,8 +19,10 @@ const TotalHours = require('./TotalHours')
 //modules
 const login = require('../modules/login')
 
+
+
 //database - mongoose
-mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, });
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.set('useFindAndModify', false);

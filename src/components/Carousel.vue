@@ -8,8 +8,8 @@
 
       <v-layout align-center justify-left>
         <v-flex xs12 sm8 md7 lg5>
-          <v-card class="mx-auto" justify-left color="rgb(255, 255, 255, 0.2)" max-width="400">
-            <v-card-text class="text--primary">
+          <v-card class="mx-auto" justify-left color="rgba(0,0,0,0.3)" max-width="400">
+            <v-card-text class="display-1 font-weight-bold" light color="white">
               <div>{{item.text}}</div>
             </v-card-text>
           </v-card>
@@ -28,22 +28,22 @@ export default {
       {
         src: require("@/assets/pic1.jpg"),
         text:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+          "Let your smile shine all day long."
       },
       {
         src: require("@/assets/pic2.jpg"),
         text:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+          "The new life begins with a confident smile."
       },
       {
-        src: require("@/assets/pic3.jpg"),
+        src: require("@/assets/dental.jpg"),
         text:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+          "Make the world a better place, one smile at a time."
       },
       {
         src: require("@/assets/pic6.jpg"),
         text:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+          "A genuine smile comes from the heart, but a healthy smile needs good dental care."
       }
     ]
   })
