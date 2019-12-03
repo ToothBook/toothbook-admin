@@ -3,7 +3,6 @@
     <v-system-bar color="light-blue darken-3"></v-system-bar>
     <v-app-bar color="light-blue accent-4" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
       <v-toolbar-title style="font-family: Cursive">TOOTHBOOK</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y>
@@ -52,6 +51,25 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+    <!-- <v-footer absolute dense class="font-weight-medium mt-10">
+      <v-col class="text-center" cols="12">
+        {{ new Date().getFullYear() }} —
+        <strong>ToothBook</strong>
+      </v-col>
+    </v-footer> -->
+    <!-- <v-footer absolute class="mt-5" color="blue darken-2">
+        <v-layout row wrap align-center>
+          <v-flex xs12>
+            <div class="white--text ml-4">
+              Made with
+              <v-icon class="red--text">mdi-heart</v-icon>
+              by <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
+              and <a class="white--text" href="https://github.com/vwxyzjn">Costa Huang</a>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-footer> -->
+    <!-- </v-content> -->
   </span>
 </template>
 

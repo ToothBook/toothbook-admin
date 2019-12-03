@@ -10,7 +10,7 @@
         <v-icon small @click="deleteAppointment(item)">mdi-delete</v-icon>
       </template>
       <template v-slot:item.status="{ item }">
-      <v-chip color="green" dark>{{ item.status }}</v-chip>
+      <span class="green--text font-weight-bold">{{ item.status }}</span>
         <!-- <span>{{item.status}}</span> -->
     </template>
     </v-data-table>

@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="services" sort-by="name" class="elevation-5 ma-5 pa-4">
+  <v-data-table :headers="headers" :items="services" sort-by="name" class="elevation-5 ma-5 mb-12 pa-4">
     <template v-slot:top>
       <v-toolbar flat color="white" class="ma-4 mb-12 pa-5">
         <v-toolbar-title class="display-1">MANAGE DENTAL SERVICES</v-toolbar-title>

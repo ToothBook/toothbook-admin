@@ -1,54 +1,54 @@
 <template>
-  <v-carousel hide-delimiters>
-    <div class="container">
-      <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src">
-        <div id="description">
-          <v-card class="mx-auto" color="rgb(255, 255, 255, 0.2)" max-width="400">
+  <v-carousel cycle hide-delimiters>
+    <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src">
+      <!-- <v-layout column align-center justify-left class="white--text">
+        <h1 class="white--text mb-2 display-1 text-left">WE CARE FOR YOUR SMILE</h1>
+      </v-layout>-->
+    <v-container class="fill-height ml-12" fluid>
+
+      <v-layout align-center justify-left>
+        <v-flex xs12 sm8 md7 lg5>
+          <v-card class="mx-auto" justify-left color="rgb(255, 255, 255, 0.2)" max-width="400">
             <v-card-text class="text--primary">
               <div>{{item.text}}</div>
             </v-card-text>
           </v-card>
-        </div>
-      </v-carousel-item>
-    </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    </v-carousel-item>
   </v-carousel>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      items: [
-        {
-          src:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS-dgxDT3TdccsHgdrd3HJAbuLNAry-84kXD3wp80KjA1I7Rluo",
-          text: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
-        },
-        {
-          src:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS61gXqNX8FwCvG_5dq4pjeJAIotLw1jocbY3WJN2MIXLkOKOsy",
-          text: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
-        },
-        {
-          src:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTYw73OeAvU_prul6bW61RcseYRjiqmygkqVE88JKynaM7xIFiR",
-          text: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
-        },
-        {
-          src:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTa-ob1g6shOdHhSdGBk7dzAi5PYfy7iwY5Ikl1u9Up5hUy2A44",
-          text: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
-        }
-      ]
-    };
-  }
+  name: "clientform",
+  data: () => ({
+    items: [
+      {
+        src: require("@/assets/pic1.jpg"),
+        text:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      },
+      {
+        src: require("@/assets/pic2.jpg"),
+        text:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      },
+      {
+        src: require("@/assets/pic3.jpg"),
+        text:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      },
+      {
+        src: require("@/assets/pic6.jpg"),
+        text:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      }
+    ]
+  })
 };
 </script>
 
 <style scoped>
-#description{
-    float: right;
-    margin-top: 350px;
-    margin-right: 50px;
-}
 </style>

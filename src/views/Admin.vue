@@ -28,7 +28,7 @@
         </v-menu>
     </template>
     <template v-slot:item.status="{ item }">
-      <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+      <span :class="getColor(item.status)" dark>{{ item.status }}</span>
         <!-- <span>{{item.status}}</span> -->
     </template>
 
@@ -179,9 +179,9 @@ export default {
       });
     },
     getColor (status) {
-        if (status == "On Queue") return 'red'
-        else if (status == "Processing...") return 'orange'
-        else return 'green'
+        if (status == "On Queue") return 'red--text font-weight-bold'
+        else if (status == "Processing...") return 'orange--text font-weight-bold'
+        else return 'green--text font-weight-bold'
       },
     details(item) {
       console.log(item);
@@ -229,7 +229,7 @@ export default {
       if(item.status == "Done"){
         setTimeout(() => {
           this.list.splice(this.list.indexOf(item), 1);
-        },5000)
+        },2000)
       }
       const data = {
         status: item.status,
