@@ -35,7 +35,7 @@ const router = new VueRouter({
         {
             path: "/",
             redirect: {
-                path: "/login"
+                path: "/toothbook"
             },
         },
         {
@@ -92,7 +92,7 @@ const router = new VueRouter({
             component: ClientForm,
         },
         {
-            path: '/landing-page',
+            path: '/toothbook',
             name: 'LandingPage',
             component: LandingPage,
         },

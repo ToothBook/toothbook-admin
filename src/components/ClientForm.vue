@@ -49,7 +49,6 @@
                                 </div>
                             </template>
                         </v-checkbox>
-                        <!-- <Terms/> -->
                     </v-form>
                 </v-container>
             </v-card-text>
@@ -149,9 +148,6 @@ export default {
   },
 
   methods: {
-    // top() {
-    //   scrollbar.scrollTo(0, 0);
-    // },
     selectDate() {
       const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
       const index = this.services.map(e => e.name).indexOf(this.selectService);

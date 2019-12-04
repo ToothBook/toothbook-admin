@@ -35,7 +35,7 @@
                     <v-card-title primary-title class="layout justify-center">
                       <div class="headline text-center">About us</div>
                     </v-card-title>
-                    <v-card-text>Toothbook is the official website for (clinic-name). This site allows client who has dental problem to book for a schedule ahead of his planned check up or transaction.</v-card-text>
+                    <v-card-text>Toothbook is the official website for (clinic-name). This site allows client who has dental problem to reserve for a schedule ahead of his planned check up or transaction. <br>This would reduce wait time and create better customer services, thus, customers are getting the service when they expect it without having to wait around to do so.</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs12 md4>
@@ -52,6 +52,9 @@
                       <li>Tooth Filling</li>
                       <li>Tooth Extraction</li>
                       <li>Fluoride Treatment</li>
+                      <li>Ceramic Braces</li>
+                      <li>Dental Implants</li>
+                      <li>and may more..</li>
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -61,9 +64,14 @@
                       <v-icon x-large class="blue--text text--lighten-2">mdi-account-multiple</v-icon>
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
-                      <div class="headline text-center">Developers</div>
+                      <div class="headline text-center">People Behind</div>
                     </v-card-title>
-                    <v-card-text>Toothbook is especially made by a Group of four women as part of their Web Development III finals deliverables.</v-card-text>
+                    <v-card-text>Toothbook is especially made by a Group of four women as part of their Web Development III finals deliverables. <br>Our developers includes:
+                      <li>Mary Grace C. Tiburillo</li>
+                      <li>Jessa Jaladoni</li>
+                      <li>Ivy Joy Devilleres</li>
+                      <li>Geneva Rivas</li>
+                    </v-card-text>
                   </v-card>
                 </v-flex>
               </v-layout>

@@ -4,14 +4,16 @@
     :items="clients"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
+    :search="search"
     item-key="firstname"
     class="elevation-5 ma-5"
   >
     <template v-slot:top>
       <v-toolbar flat class="ma-5 mb-12 pa-5">
-        <v-spacer></v-spacer>
+        <!-- <v-spacer></v-spacer> -->
         <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
         <v-spacer></v-spacer>
+      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
@@ -93,6 +95,7 @@ export default {
   name: "Dashboard",
   data() {
     return {
+      search:"",
       firstname: "",
       lastname: "",
       email: "",
@@ -153,7 +156,7 @@ export default {
           text: "",
           value: "info"
         }
-      ],
+      ]
     };
   },
   methods: {
@@ -177,16 +180,16 @@ export default {
     },
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
-      console.log(item)
+      console.log(item);
       deleteAppointment(item._id)
         .then(() => this.$emit("deleteAppointment", item._id))
         .catch(err => alert(err));
       this.clients.splice(index, 1);
-      console.log(this.clients)
+      console.log(this.clients);
     },
 
     actionBtn(item) {
-      console.log(item)
+      console.log(item);
       if (item.status === "On Queue") {
         item.action = "Done";
         item.status = "Processing...";

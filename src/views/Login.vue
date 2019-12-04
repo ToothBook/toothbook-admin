@@ -59,6 +59,8 @@
 
 <script>
 import { getAccount, loginAdmin, registerAdmin } from "../helpers/actions.js";
+import Swal from "sweetalert2";
+
 export default {
   name: "btnLogin",
   data() {
@@ -85,7 +87,7 @@ export default {
               name: "Dashboard"
             });
           } else {
-            alert("Invalid credentials");
+            this.alertError()
           }
         })
         .catch(err => alert(err.error));
@@ -105,7 +107,15 @@ export default {
           });
         })
         .catch(err => alert(err.error));
-    }
+    },
+
+    alertError() {
+      Swal.fire({
+        type: "error",
+        title: "Oops...",
+        text: "Invalid username or password!"
+      });
+    },
   },
   mounted() {
     getAccount()
