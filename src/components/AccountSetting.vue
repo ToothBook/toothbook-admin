@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-4 pa-5" height="100%">
+  <v-card class="pa-12" height="100%">
     <v-card-title class="headline">
       <v-icon large class="mr-2">mdi-account</v-icon>Account Settings
     </v-card-title>
@@ -70,7 +70,6 @@
       <v-icon large class="mr-2">mdi-wrench</v-icon>Operation Settings
     </v-card-title>
     <v-list three-line subheader>
-      <!-- <v-subheader>Operational Controls</v-subheader> -->
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Total Working Minutes Per Day</v-list-item-title>
@@ -163,7 +162,6 @@ export default {
       updateAccount(data, this.id)
         .then(data => {
           this.$emit("updateAccount", data.data);
-          console.log(data.data);
           this.dialog1= false
           this.username = data.data[0].username;
           this.password = data.data[0].password;
@@ -178,17 +176,10 @@ export default {
       updateHours(data)
         .then(data => {
           this.$emit("updateHours", data.data);
-          console.log(data.data);
-          // this.hours = data.data[0].totalHours
           this.dialog2 = false;
         })
         .catch(err => alert(err.error));
     },
-    // close() {
-    //   this.dialog2 = false;
-    //   console.log(this.data);
-    //   this.hours = this.data;
-    // },
 
     alertUpdate() {
       Swal.fire({
@@ -213,6 +204,7 @@ export default {
         }
       });
     },
+
     alertUpdateTime() {
       Swal.fire({
         title: "Are you sure?",
@@ -237,6 +229,7 @@ export default {
       });
     }
   },
+  
   mounted() {
     getHours()
       .then(data => (this.hours = this.data = data.data[0].totalHours))
@@ -246,8 +239,7 @@ export default {
         data => (
           (this.username = data.data[0].username),
           (this.password = data.data[0].password),
-          (this.id = data.data[0]._id),
-          console.log(data.data[0])
+          (this.id = data.data[0]._id)
         )
       )
       .catch(err => alert(err));

@@ -3,24 +3,15 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
-
-
 
 //models
 const Service = require('./Services');
 const Appointment = require('./Appointment');
 const AdminAccnt = require('./AdminAccount')
 const TotalHours = require('./TotalHours')
-    // const User = require('../api/AdminAccount')
-
-
-//modules
-const login = require('../modules/login')
 
 //database - mongoose
-mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/DbToothbook', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, });
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.set('useFindAndModify', false);
@@ -71,6 +62,14 @@ app.get('/api/appointment/list', (req, res) => {
         return res.send({ data })
     })
 })
+
+app.get('/api/appointment/done', (req, res) => {
+    Appointment.find({ status: { $ne: 'Done' } }).exec((err, data) => {
+        if (err) return res.status(404).send('Error while getting list of appointment!');
+        return res.send({ data })
+    })
+})
+
 app.get('/api/appointment/getDone', (req, res) => {
     Appointment.find({ status: "Done" }).exec((err, data) => {
         if (err) return res.status(404).send('Error while getting list of appointment!');
@@ -106,6 +105,13 @@ app.post('/api/appointment/update/:id', (req, res) => {
     })
 })
 
+app.post('/api/update/date/:id', (req, res) => {
+    Appointment.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+    })
+})
+
 app.post('/api/appointment/delete/:id', (req, res) => {
     Appointment.findByIdAndRemove(req.params.id, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
@@ -131,14 +137,13 @@ app.post('/api/admin/login', (req, res) => {
     });
 });
 
-// app.post('/api/account/update/:id', (req, res) => {
-//     console.log(req.body)
-//     AdminAccnt.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
-//         if (err) return res.status(404).send({ error: err.message });
-//         return res.send({ message: 'Service is successfully updated', data })
-
-//     })
-// })
+app.post("/api/admin/register", (req, res) => {
+    const data = new AdminAccnt({ username: req.body.username, password: req.body.password });
+    data.save((err) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ data });
+    })
+})
 
 app.post('/api/account/delete/:id', (req, res) => {
     AdminAccnt.findByIdAndRemove(req.params.id, (err, data) => {
@@ -181,82 +186,6 @@ app.post('/api/hours/update/', (req, res) => {
     TotalHours.updateMany({}, req.body, { multi: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
-    })
-})
-
-
-// app.get('/api/hours/getOne', (req, res) => {
-//     TotalHours.findOne({hoursRequested:req.body} , (err, data) => {
-//         console.log(data)
-//         if (err) return res.status(404).send({ error: err.message });
-//         return res.send({ message: 'Service is successfully updated', data })
-//     })
-// })
-
-//login
-// app.post('/api/admin/login', (req, res) => {
-//         console.log(req.body)
-//         const data = new User({ username: req.body.username, password: req.body.password });
-//         data.save((err) => {
-//             if (err) return res.status(404).send({ error: err.message });
-//             return res.send({ data });
-//         });
-//     })
-// app.post("/api/admin/login", (req, res) => {
-//     console.log(req.body);
-//     var username = req.body.username
-//     var password = req.body.password
-//     User.findOne({ username: username }, function(err, data) {
-//         if (err) {
-//             return res.send(err)
-//         }
-//         if (data != null) {
-//             console.log(password)
-//                 // var match = bcrypt.compareSync(password, data.password)
-//             console.log(data.password)
-
-//             if (password === data.password) {
-//                 var acc_token = jwt.sign({ data }, "token1234", { expiresIn: "12h" })
-//                 console.log(acc_token)
-//                 return res.send({
-//                     status: true,
-//                     auth: true,
-//                     user: data,
-//                     token: acc_token,
-//                     sms: "success"
-//                 })
-//             } else {
-//                 return res.send({
-//                     status: false,
-//                     auth: false,
-//                     sms: "Incorrect Password!!",
-//                     token: null,
-//                     user: null
-//                 })
-//             }
-//         }
-
-//         return res.send({
-//             status: false,
-//             auth: false,
-//             sms: "Username Not Found!!"
-//         })
-//     })
-// });
-
-app.get("/api/admin/get", (req, res) => {
-    login.getuser(req, res)
-})
-
-app.post("api/admin/delete", (req, res) => {
-    login.deleteuser(req, res)
-})
-
-app.post("/api/admin/register", (req, res) => {
-    const data = new AdminAccnt({ username: req.body.username, password: req.body.password });
-    data.save((err) => {
-        if (err) return res.status(404).send({ error: err.message });
-        return res.send({ data });
     })
 })
 

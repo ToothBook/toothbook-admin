@@ -1,5 +1,10 @@
 <template>
-  <v-data-table :headers="headers" :items="services" sort-by="name" class="elevation-5 ma-5 pa-4">
+  <v-data-table
+    :headers="headers"
+    :items="services"
+    sort-by="name"
+    class="elevation-5 ma-5 mb-12 pa-4"
+  >
     <template v-slot:top>
       <v-toolbar flat color="white" class="ma-4 mb-12 pa-5">
         <v-toolbar-title class="display-1">MANAGE DENTAL SERVICES</v-toolbar-title>
@@ -12,7 +17,7 @@
           <v-card>
             <v-card-title class="black--text">
               <v-list-item-avatar tile right size="62">
-                <img src="../assets/toothbook-logo5.png" />
+                <img src="../assets/toothbook-logo5.png">
               </v-list-item-avatar>
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
@@ -51,7 +56,6 @@
     </template>
     <template v-slot:item.action="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
-      <!-- <v-icon small @click="deleteService(item)"> -->
       <v-icon small @click="alertDelete(item)">delete</v-icon>
     </template>
   </v-data-table>
@@ -68,7 +72,6 @@ import Swal from "sweetalert2";
 
 export default {
   name: "schedules",
-  // props:['service'],
   data: () => ({
     name: "",
     time: 0,
@@ -131,7 +134,6 @@ export default {
       this.name = null;
       this.time = null;
       this.$refs.form.reset();
-      // this.retrieveServices()
     },
 
     formAction() {
@@ -147,29 +149,25 @@ export default {
       createService(data)
         .then(data => {
           this.$emit("createService", data.data);
-          console.log(data.data);
           this.services.push(data.data);
           this.close();
         })
         .catch(err => alert(err.error));
-        Swal.fire({
-            title: "Added!",
-            text: "Service is successfully added.",
-            type: "success",
-            showConfirmButton: false,
-            timer: 1500
-          });
+      Swal.fire({
+        title: "Added!",
+        text: "Service is successfully added.",
+        type: "success",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
 
     deleteService(item) {
       const index = this.services.indexOf(item);
-      // const service = this.services[index];
-      console.log(item);
       deleteService(item._id)
         .then(() => this.$emit("deleteService"))
         .catch(err => alert(err));
       this.services.splice(index, 1);
-      
     },
 
     update() {
@@ -177,7 +175,6 @@ export default {
       updateService(data, this.service_id)
         .then(data => {
           this.$emit("updateService", data.data);
-          console.log(data.data);
           Object.assign(this.services[this.editedIndex], data.data);
           this.close();
         })
@@ -237,7 +234,7 @@ export default {
   },
   mounted() {
     getServices()
-      .then(data => ((this.services = data.data), console.log(this.services)))
+      .then(data => (this.services = data.data))
       .catch(err => alert(err));
   }
 };

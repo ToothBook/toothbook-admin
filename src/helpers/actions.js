@@ -36,6 +36,11 @@ export function getAppointments() {
         .then(response => response.data)
 }
 
+export function getAppointmentsDone() {
+    return axios.get(`${BASE_URL}/api/appointment/done`)
+        .then(response => response.data)
+}
+
 export function getAppmtDone() {
     return axios.get(`${BASE_URL}/api/appointment/getDone`)
         .then(response => response.data)
@@ -75,19 +80,14 @@ export function updateAppointment(data, id) {
         .catch(err => Promise.reject(err.message))
 }
 
-
-//captcha
-
-export function recaptcha() {
-    return axios.get('https://www.google.com/recaptcha/api/siteverify')
-        .then((response) => {
-            console.log(response)
+export function updateDate(data, id) {
+    return axios.post(`${BASE_URL}/api/update/date/${id}`, { data })
+        .then(response => {
+            return response.data
         })
-        .catch((error) => {
-            console.log(error)
-        })
-
+        .catch(err => Promise.reject(err.message))
 }
+
 //Admin - Account
 export function getAccount() {
     return axios.get(`${BASE_URL}/api/account/retrieve`)
@@ -145,24 +145,6 @@ export function updateHours(data) {
         })
         .catch(err => Promise.reject(err.message))
 }
-
-// export function getDate(data) {
-//     return axios.get(`${BASE_URL}/api/hours/getOne/`, { data })
-//         .then(response => {
-//             return response.data
-//         })
-//         .catch(err => Promise.reject(err.message))
-// }
-// export function login(data) {
-//     return axios.post(`${BASE_URL}/api/admin/login`, {
-//             username: data.username,
-//             password: data.password,
-//         })
-//         .then(response => {
-//             return response.data
-//         })
-//         .catch(err => Promise.reject(err.message));
-// }
 
 export function getuser(data) {
     return axios.get(`${BASE_URL}/api/admin/get`, { data })

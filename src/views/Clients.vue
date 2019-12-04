@@ -7,11 +7,10 @@
     </v-card-title>
     <v-data-table :headers="headers" :items="clients" :search="search">
       <template v-slot:item.action="{ item }">
-        <v-icon small @click="deleteAppointment(item)">mdi-delete</v-icon>
+        <v-icon small @click="alertDelete(item)">mdi-delete</v-icon>
       </template>
       <template v-slot:item.status="{ item }">
-      <v-chip color="green" dark>{{ item.status }}</v-chip>
-        <!-- <span>{{item.status}}</span> -->
+      <span class="green--text font-weight-bold">{{ item.status }}</span>
     </template>
     </v-data-table>
   </v-card>
@@ -19,6 +18,7 @@
 
 <script>
 import { getAppmtDone, deleteAppointment } from "../helpers/actions";
+import Swal from "sweetalert2";
 
 export default {
   name: "Clients",
@@ -63,24 +63,39 @@ export default {
   methods: {
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
-      // const client = this.clients[index];
-      // console.log(client);
       deleteAppointment(item._id)
         .then(() => this.$emit("deleteAppointment", item._id))
         .catch(err => alert(err));
       this.clients.splice(index, 1);
-        
     },
 
-    // retrieveAppointments() {
-    //   getAppointments()
-    //     .then(data => ((this.clients = data.data), console.log(data.data)))
-    //     .catch(err => alert(err));
-    // }
+    alertDelete(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.deleteAppointment(item);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+    }
   },
   mounted() {
     getAppmtDone()
-      .then(data => ((this.clients = data.data), console.log(data.data)))
+      .then(data => ((this.clients = data.data)))
       .catch(err => alert(err));
   }
 };
