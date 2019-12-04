@@ -1,15 +1,9 @@
 <template>
-  <!-- <v-row justify="center"> -->
-  <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition"> -->
-  <!-- <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-  </template>-->
   <v-card class="ma-4 pa-5" height="100%">
     <v-card-title class="headline">
       <v-icon large class="mr-2">mdi-account</v-icon>Account Settings
     </v-card-title>
     <v-list three-line subheader>
-      <!-- <v-subheader>User Controls</v-subheader> -->
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Username</v-list-item-title>

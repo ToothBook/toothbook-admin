@@ -5,6 +5,7 @@ import Services from '../components/Schedule.vue'
 import ClientForm from '../components/ClientForm.vue'
 import Login from '../views/Login.vue'
 import Client from '../views/Clients.vue'
+// import LandingPage from '../views/LandingPage.vue'
 import store from "../store"
 import AccountSettings from '../components/AccountSetting.vue';
 
@@ -102,14 +103,12 @@ const router = new VueRouter({
                 path: '/clients-form',
                 name: 'ClientsForm',
                 component: ClientForm,
-                beforeEnter: (to, from, next) => {
-                    if (store.state.authenticated == false) {
-                        next("/login");
-                    } else {
-                        next();
-                    }
-                }
             },
+            // {
+            //     path: '/landing',
+            //     name: 'Landing',
+            //     component: LandingPage,
+            // },
             {
                 path: "*",
                 redirect: {

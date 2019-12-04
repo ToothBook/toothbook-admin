@@ -229,7 +229,7 @@ export default {
       if(item.status == "Done"){
         setTimeout(() => {
           this.list.splice(this.list.indexOf(item), 1);
-        },5000)
+        },2000)
       }
       const data = {
         status: item.status,
