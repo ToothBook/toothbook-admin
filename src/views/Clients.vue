@@ -1,6 +1,9 @@
 <template>
   <v-card class="ma-5 mb-12 pa-5">
     <v-card-title class="display-2">
+      <v-avatar tile right class="mr-2" size="62">
+          <img src="../assets/toothbook-logo5.png">
+        </v-avatar>
       List of Clients
       <v-spacer></v-spacer>
       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>

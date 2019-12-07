@@ -13,15 +13,15 @@
             </v-card-title>
             <v-card-text>
                 <v-container class="scrollbar" id="style-3">
-                    <v-form class="force-overflow" v-scroll:.scroll-target="onScroll" dark ref="form" v-model="valid" :lazy-validation="lazy">
+                    <v-form class="force-overflow" dark ref="form" v-model="valid" :lazy-validation="lazy">
                         <v-select v-model="selectService" :items="services" item-text="name" :rules="[v => !!v || 'Item is required']" label="Dental Services" sort-by="name" @change="disable = false, modal= true" required></v-select>
                         <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
                             <template v-slot:activator="{ on }">
-                                <v-text-field v-model="date" label="When" readonly v-on="on" :disabled="disable"></v-text-field>
+                                <v-text-field v-model="date" :rules="[v => !!v || 'Date is required']" label="When" readonly v-on="on" :disabled="disable"></v-text-field>
                             </template>
                             <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
                                 <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                                <v-btn text color="primary" @click="modal = false, cancelDate">Cancel</v-btn>
                                 <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
                             </v-date-picker>
                         </v-dialog>
@@ -53,7 +53,7 @@
                 </v-container>
             </v-card-text>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text class="ml-5" @click="dialog2 = false">Cancel</v-btn>
+            <v-btn color="primary" text class="ml-5" @click="dialog2 = false, cancel()">Cancel</v-btn>
             <v-btn :disabled="!valid" color="primary" class="ml-5" text @click="validate, alertSubmit()">Submit</v-btn>
         </v-card>
     </v-dialog>
@@ -119,8 +119,8 @@ export default {
     contact: "",
     hours: [],
     nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 50) || "Name must be less than 50 characters"
+      v => !!v || "Input is required",
+      v => (v && v.length <= 50) || "Input must be less than 50 characters"
     ],
     email: "",
     emailRules: [
@@ -148,6 +148,9 @@ export default {
   },
 
   methods: {
+    cancel(){
+        this.$refs.form.reset();
+    },
     selectDate() {
       const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
       const index = this.services.map(e => e.name).indexOf(this.selectService);
@@ -192,7 +195,7 @@ export default {
         this.submitHours();
         this.firstname = this.lastname = this.contact = this.email = this.note = this.selectService = this.date = null;
         this.checkbox = false;
-        this.snackbar = true;
+        // this.snackbar = true;
         this.$refs.form.reset();
       }
     },
@@ -242,8 +245,16 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
+        }else{
+          this.cancelDate()
         }
       });
+    },
+    cancelDate() {
+      getHours()
+        .then(data => (this.dataHours = data.data))
+        .catch(err => console.log(err));
+      this.date = null
     }
   },
   mounted() {

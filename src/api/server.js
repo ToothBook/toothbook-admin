@@ -30,8 +30,18 @@ app.get('/api/service/list', (req, res) => {
     })
 })
 
+app.post('/api/service/one', (req, res) => {
+    // console.log(req.body)
+    Service.findOne({name: req.body.data}, (err, data) => {
+        if (err) {
+            return res.status(404).send('Error while getting list of services!');
+        }
+        return res.send({ data })
+    })
+})
+
 app.post('/api/service/create', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const data = new Service({ name: req.body.name, time: req.body.time });
     data.save((err) => {
         if (err) return res.status(404).send({ error: err.message });
@@ -40,7 +50,7 @@ app.post('/api/service/create', (req, res) => {
 });
 
 app.post('/api/service/update/:id', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     Service.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
@@ -78,7 +88,7 @@ app.get('/api/appointment/getDone', (req, res) => {
 })
 
 app.post('/api/appointment/create', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const data = new Appointment({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -99,6 +109,15 @@ app.post('/api/appointment/create', (req, res) => {
 });
 
 app.post('/api/appointment/update/:id', (req, res) => {
+    console.log(req.body)
+    Appointment.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ message: 'Service is successfully updated', data })
+    })
+})
+
+app.post('/api/appointment/updateDate/:id', (req, res) => {
+    // console.log(req.body)
     Appointment.findByIdAndUpdate(req.params.id, req.body.data, { new: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
@@ -130,7 +149,7 @@ app.get('/api/account/retrieve', (req, res) => {
 })
 
 app.post('/api/admin/login', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     AdminAccnt.findOne({ username: req.body.data }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ data });
@@ -153,7 +172,7 @@ app.post('/api/account/delete/:id', (req, res) => {
 })
 
 app.put('/api/admin/update/:id', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     AdminAccnt.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, data) => {
         console.log(data)
         if (err) return res.status(404).send({ error: err.message });
@@ -173,7 +192,7 @@ app.post('/api/hours/add', (req, res) => {
 
 app.get('/api/hours/get', (req, res) => {
     TotalHours.find({}, (err, data) => {
-        console.log(data)
+        // console.log(data)
         if (err) {
             return res.status(404).send('Error while getting list of services!');
         }
@@ -182,10 +201,19 @@ app.get('/api/hours/get', (req, res) => {
 })
 
 app.post('/api/hours/update/', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     TotalHours.updateMany({}, req.body, { multi: true }, (err, data) => {
         if (err) return res.status(404).send({ error: err.message });
         return res.send({ message: 'Service is successfully updated', data })
+    })
+})
+
+app.post('/api/time/add/', (req, res) => {
+    // console.log(req.body)
+    const data = new TotalHours({ totalHours: req.body.data.totalHours })
+    data.save((err) => {
+        if (err) return res.status(404).send({ error: err.message });
+        return res.send({ data });
     })
 })
 

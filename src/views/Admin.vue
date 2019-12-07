@@ -11,9 +11,12 @@
     <template v-slot:top>
       <v-toolbar flat class="ma-5 mb-12 pa-5">
         <!-- <v-spacer></v-spacer> -->
+        <v-avatar tile right class="mr-2" size="62">
+          <img src="../assets/toothbook-logo5.png">
+        </v-avatar>
         <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
         <v-spacer></v-spacer>
-      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
@@ -26,7 +29,7 @@
       >{{item.action}}</v-btn>
     </template>
     <template v-slot:item.delete="{ item }">
-        <v-icon small @click="alertDelete(item)">mdi-delete</v-icon>
+      <v-icon small @click="alertDelete(item)">mdi-delete</v-icon>
     </template>
     <template v-slot:item.status="{ item }">
       <span :class="getColor(item.status)" dark>{{ item.status }}</span>
@@ -78,14 +81,30 @@
     <template v-slot:item.date="{ item }">
       <span>{{item.date.substr(0, 10)}}</span>
     </template>
+    <template v-slot:item.edit="{ item }">
+      <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
+        <template v-slot:activator="{ on }">
+          <v-icon small class="mr-2" v-on="on" @click="getOneService(item)">edit</v-icon>
+        </template>
+        <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="modal = false, cancel()">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.dialog.save(date), alertSubmit(item)">OK</v-btn>
+        </v-date-picker>
+      </v-dialog>
+    </template>
   </v-data-table>
-</template>-->
+</template>
 
 <script>
 import {
   getAppointmentsDone,
   deleteAppointment,
-  updateAppointment
+  updateAppointment,
+  getHours,
+  updateHours,
+  getServiceOne
+  // updateAppointment
 } from "../helpers/actions";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -95,7 +114,7 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      search:"",
+      search: "",
       firstname: "",
       lastname: "",
       email: "",
@@ -108,6 +127,12 @@ export default {
       singleExpand: false,
       label: "Process",
       dialog: false,
+      date: null,
+      currentDate: new Date().toISOString().substr(0, 10),
+      dataHours: [],
+      modal: false,
+      time: 0,
+      id: 0,
       actions: [
         {
           title: "Cancel"
@@ -118,8 +143,14 @@ export default {
       ],
       headers: [
         {
-          text: "Date of Reservation",
+          text: "",
           align: "left",
+          value: "edit",
+          sortable: false
+        },
+        {
+          text: "Date of Reservation",
+          // align: "left",
           value: "date"
         },
         {
@@ -135,8 +166,9 @@ export default {
           value: "lastname"
         },
         {
-          text: "Requested Dental Service",
-          value: "reason"
+          text: "Dental Service",
+          value: "reason",
+          sortable:false
         },
         {
           text: "Status",
@@ -150,16 +182,78 @@ export default {
         },
         {
           text: "",
-          value: "delete"
+          value: "delete",
+          sortable:false
         },
         {
           text: "",
-          value: "info"
+          value: "info",
+          sortable:false
         }
       ]
     };
   },
   methods: {
+    submit(item) {
+      this.dateUpdate(item);
+      this.submitHours();
+      this.date = null;
+    },
+    selectDate() {
+      const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
+      const time = this.time;
+      const date = `${this.date}T00:00:00.000Z`;
+      if (!list.some(item => item.date == date)) {
+        this.dataHours[0].hoursRequested.push({
+          date: date,
+          minutes: time
+        });
+      } else {
+        const indexDate = list.map(e => e.date).indexOf(date);
+        const totalTime = list[indexDate].minutes + time;
+        if (totalTime > this.dataHours[0].totalHours) {
+          this.alertDisplay();
+          this.date = null;
+        } else {
+          list[indexDate].minutes += time;
+        }
+      }
+    },
+    dateUpdate(item) {
+      const date = {
+        date: `${this.date}T00:00:00.000Z`,
+        dateOfSubmit: moment().format("MMMM Do YYYY, h:mm:ss a")
+      };
+      updateAppointment(date, this.id)
+        .then(data => {
+          this.$emit("updateAppointment", data.data);
+          item.date = data.data.date;
+          item.dateOfSubmit = data.data.dateOfSubmit;
+        })
+        .catch(err => console.log(err));
+    },
+
+    getOneService(data) {
+      this.id = data._id;
+      getServiceOne(data.reason)
+        .then(data => (this.time = data.data.time))
+        .catch(err => console.log(err));
+    },
+
+    submitHours() {
+      updateHours(this.dataHours[0])
+        .then(data => {
+          this.$emit("updateHours", data.data);
+        })
+        .catch(err => console.log(err.error));
+    },
+    alertDisplay() {
+      Swal.fire({
+        type: "error",
+        title: "Oops...",
+        text: "The date is not available anymore!"
+      });
+    },
     getColor(status) {
       if (status == "On Queue") return "red--text font-weight-bold";
       else if (status == "Processing...")
@@ -180,16 +274,13 @@ export default {
     },
     deleteAppointment(item) {
       const index = this.clients.indexOf(item);
-      console.log(item);
       deleteAppointment(item._id)
         .then(() => this.$emit("deleteAppointment", item._id))
         .catch(err => alert(err));
       this.clients.splice(index, 1);
-      console.log(this.clients);
     },
 
     actionBtn(item) {
-      console.log(item);
       if (item.status === "On Queue") {
         item.action = "Done";
         item.status = "Processing...";
@@ -235,13 +326,48 @@ export default {
           });
         }
       });
+    },
+    alertSubmit(item) {
+      Swal.fire({
+        title: "Are you sure you want to updated?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.submit(item);
+          this.dialog2 = false;
+          this.disable = true;
+          Swal.fire({
+            title: "Updated!",
+            text: "Your date has been updated.",
+            type: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } else {
+          this.cancel();
+        }
+      });
+    },
+    cancel() {
+      getHours()
+        .then(data => (this.dataHours = data.data))
+        .catch(err => console.log(err));
+      this.date = null;
     }
   },
 
   mounted() {
     getAppointmentsDone()
-      .then(data => ((this.clients = data.data), console.log(data.data)))
+      .then(data => (this.clients = data.data))
       .catch(err => alert(err));
+    getHours()
+      .then(data => (this.dataHours = data.data))
+      .catch(err => console.log(err));
   }
 };
 </script>

@@ -131,7 +131,8 @@ import {
   updateAccount,
   updateHours,
   getHours,
-  getAccount
+  getAccount,
+  addTime
 } from "../helpers/actions";
 export default {
   name: "accountSettings",
@@ -176,6 +177,19 @@ export default {
       updateHours(data)
         .then(data => {
           this.$emit("updateHours", data.data);
+          console.log(data.data)
+          this.dialog2 = false;
+        })
+        .catch(err => alert(err.error));
+    },
+
+    timeAdd() {
+      const data = {
+        totalHours: this.hours
+      };
+      addTime(data)
+        .then(data => {
+          this.$emit("addTime", data.data);
           this.dialog2 = false;
         })
         .catch(err => alert(err.error));
@@ -218,6 +232,7 @@ export default {
       }).then(result => {
         if (result.value) {
           this.updateTotalHours();
+          // this.timeAdd()
           Swal.fire({
             title: "Updated!",
             text: "Time has been updated.",
