@@ -1,99 +1,105 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="clients"
-    :single-expand="singleExpand"
-    :expanded.sync="expanded"
-    :search="search"
-    item-key="firstname"
-    class="elevation-5 ma-5"
-  >
-    <template v-slot:top>
-      <v-toolbar flat class="ma-5 mb-12 pa-5">
-        <!-- <v-spacer></v-spacer> -->
-        <v-avatar tile right class="mr-2" size="62">
-          <img src="../assets/toothbook-logo5.png">
-        </v-avatar>
-        <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.action="{ item }">
-      <v-btn
-        x-small
-        color="secondary"
-        :disabled="item.status == 'Done'"
-        dark
-        @click="actionBtn(item)"
-      >{{item.action}}</v-btn>
-    </template>
-    <template v-slot:item.delete="{ item }">
-      <v-icon small @click="alertDelete(item)">mdi-delete</v-icon>
-    </template>
-    <template v-slot:item.status="{ item }">
-      <span :class="getColor(item.status)" dark>{{ item.status }}</span>
-    </template>
-    <template v-slot:item.info="{ item }">
-      <v-dialog v-model="dialog" max-width="500px">
-        <template v-slot:activator="{ on }">
-          <v-icon small @click="details(item)" v-on="on">mdi-information</v-icon>
-        </template>
-        <v-card class="pa-4">
-          <v-card-title class="black--text">
-            <v-list-item-avatar tile right size="62">
-              <img src="../assets/toothbook-logo5.png">
-            </v-list-item-avatar>
-            <span class="headline">Client's Details</span>
-          </v-card-title>
-          <v-divider color="light-blue lighten-2"></v-divider>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <v-list-item-title>{{firstname+" "+lastname}}</v-list-item-title>
-              <v-list-item-subtitle>Name</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <v-list-item-title>{{email}}</v-list-item-title>
-              <v-list-item-subtitle>Email Address</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <v-list-item-title>{{contact}}</v-list-item-title>
-              <v-list-item-subtitle>Contact Number</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <v-list-item-title>{{note}}</v-list-item-title>
-              <v-list-item-subtitle>Notes</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn dark color="light-blue accent-3" @click="dialog=false">close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </template>
-    <template v-slot:item.date="{ item }">
-      <span>{{item.date.substr(0, 10)}}</span>
-    </template>
-    <template v-slot:item.edit="{ item }">
-      <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
-        <template v-slot:activator="{ on }">
-          <v-icon small class="mr-2" v-on="on" @click="getOneService(item)">edit</v-icon>
-        </template>
-        <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="clients"
+      :search="search"
+    
+      class="elevation-5 ma-5"
+    >
+      <template v-slot:top>
+        <v-toolbar flat class="ma-5 mb-12 pa-5">
+          <!-- <v-spacer></v-spacer> -->
+          <v-avatar tile right class="mr-2" size="62">
+            <img src="../assets/toothbook-logo5.png">
+          </v-avatar>
+          <v-toolbar-title class="text-center display-2">Queue of Clients</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="modal = false, cancel()">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(date), alertSubmit(item)">OK</v-btn>
-        </v-date-picker>
-      </v-dialog>
-    </template>
-  </v-data-table>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.action="{ item }">
+        <v-btn
+          x-small
+          color="secondary"
+          :disabled="item.status == 'Done'"
+          dark
+          @click="actionBtn(item)"
+        >{{item.action}}</v-btn>
+      </template>
+      <template v-slot:item.delete="{ item }">
+        <v-icon small @click="alertDelete(item)">mdi-delete</v-icon>
+      </template>
+      <template v-slot:item.status="{ item }">
+        <span :class="getColor(item.status)" dark>{{ item.status }}</span>
+      </template>
+      <template v-slot:item.info="{ item }">
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on }">
+            <v-icon small @click="details(item)" v-on="on">mdi-information</v-icon>
+          </template>
+          <v-card class="pa-4">
+            <v-card-title class="black--text">
+              <v-list-item-avatar tile right size="62">
+                <img src="../assets/toothbook-logo5.png">
+              </v-list-item-avatar>
+              <span class="headline">Client's Details</span>
+            </v-card-title>
+            <v-divider color="light-blue lighten-2"></v-divider>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>{{firstname+" "+lastname}}</v-list-item-title>
+                <v-list-item-subtitle>Name</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>{{email}}</v-list-item-title>
+                <v-list-item-subtitle>Email Address</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>{{contact}}</v-list-item-title>
+                <v-list-item-subtitle>Contact Number</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>{{note}}</v-list-item-title>
+                <v-list-item-subtitle>Notes</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn dark color="light-blue accent-3" @click="dialog=false">close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </template>
+      <template v-slot:item.date="{ item }">
+        <span>{{item.date.substr(0, 10)}}</span>
+      </template>
+      <template v-slot:item.edit="{ item }">
+        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
+          <template v-slot:activator="{ on }">
+            <v-icon small class="mr-2" @click="getOneService(item)" v-on="on">edit</v-icon>
+          </template>
+          <v-date-picker v-model="date" class="elevation-0" scrollable :min="currentDate" @change="selectDate">
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="modal = false, cancel()">Cancel</v-btn>
+            <v-btn text color="primary" v-if="date!=null" @click="$refs.dialog.save(date), alertSubmit(item)">OK</v-btn>
+          </v-date-picker>
+        </v-dialog>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -104,7 +110,6 @@ import {
   getHours,
   updateHours,
   getServiceOne
-  // updateAppointment
 } from "../helpers/actions";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -122,83 +127,39 @@ export default {
       note: "",
       disable: false,
       checked: false,
-      expanded: [],
       clients: [],
-      singleExpand: false,
-      label: "Process",
+      itemDate:"",
       dialog: false,
+      index:0,
       date: null,
       currentDate: new Date().toISOString().substr(0, 10),
       dataHours: [],
       modal: false,
       time: 0,
       id: 0,
-      actions: [
-        {
-          title: "Cancel"
-        },
-        {
-          title: "Delete"
-        }
-      ],
+      actions: [{ title: "Cancel" }, { title: "Delete" }],
       headers: [
-        {
-          text: "",
-          align: "left",
-          value: "edit",
-          sortable: false
-        },
-        {
-          text: "Date of Reservation",
-          // align: "left",
-          value: "date"
-        },
-        {
-          text: "Date of Submission",
-          value: "dateOfSubmit"
-        },
-        {
-          text: "Firstname",
-          value: "firstname"
-        },
-        {
-          text: "Lastname",
-          value: "lastname"
-        },
-        {
-          text: "Dental Service",
-          value: "reason",
-          sortable:false
-        },
-        {
-          text: "Status",
-          value: "status",
-          sortable: false
-        },
-        {
-          text: "Actions",
-          value: "action",
-          sortable: false
-        },
-        {
-          text: "",
-          value: "delete",
-          sortable:false
-        },
-        {
-          text: "",
-          value: "info",
-          sortable:false
-        }
+        { text: "", align: "left", value: "edit", sortable: false },
+        { text: "Date of Reservation", value: "date" },
+        { text: "Date of Submission", value: "dateOfSubmit" },
+        { text: "Firstname", value: "firstname" },
+        { text: "Lastname", value: "lastname" },
+        { text: "Dental Service", value: "reason", sortable: false },
+        { text: "Status", value: "status", sortable: false },
+        { text: "Actions", value: "action", sortable: false },
+        { text: "", value: "delete", sortable: false },
+        { text: "", value: "info", sortable: false }
       ]
     };
   },
   methods: {
     submit(item) {
-      this.dateUpdate(item);
+      console.log(item)
+      this.dateUpdate();
       this.submitHours();
       this.date = null;
     },
+    
     selectDate() {
       const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
       const time = this.time;
@@ -219,7 +180,8 @@ export default {
         }
       }
     },
-    dateUpdate(item) {
+
+    dateUpdate() {
       const date = {
         date: `${this.date}T00:00:00.000Z`,
         dateOfSubmit: moment().format("MMMM Do YYYY, h:mm:ss a")
@@ -227,13 +189,15 @@ export default {
       updateAppointment(date, this.id)
         .then(data => {
           this.$emit("updateAppointment", data.data);
-          item.date = data.data.date;
-          item.dateOfSubmit = data.data.dateOfSubmit;
+          this.clients[this.index].date= data.data.date;
+          // item.date = data.data.date;
+          this.clients[this.index].dateOfSubmit = data.data.dateOfSubmit;
         })
         .catch(err => console.log(err));
     },
 
     getOneService(data) {
+      this.index = this.clients.indexOf(data); 
       this.id = data._id;
       getServiceOne(data.reason)
         .then(data => (this.time = data.data.time))
@@ -247,6 +211,7 @@ export default {
         })
         .catch(err => console.log(err.error));
     },
+
     alertDisplay() {
       Swal.fire({
         type: "error",
@@ -254,6 +219,7 @@ export default {
         text: "The date is not available anymore!"
       });
     },
+    
     getColor(status) {
       if (status == "On Queue") return "red--text font-weight-bold";
       else if (status == "Processing...")
@@ -272,7 +238,7 @@ export default {
         this.alertDelete(item);
       }
     },
-    deleteAppointment(item) {
+    deleteAppnt(item) {
       const index = this.clients.indexOf(item);
       deleteAppointment(item._id)
         .then(() => this.$emit("deleteAppointment", item._id))
@@ -316,7 +282,7 @@ export default {
         reverseButtons: true
       }).then(result => {
         if (result.value) {
-          this.deleteAppointment(item);
+          this.deleteAppnt(item);
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",

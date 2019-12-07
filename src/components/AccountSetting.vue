@@ -13,7 +13,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Password</v-list-item-title>
-          <v-list-item-subtitle>{{password}}</v-list-item-subtitle>
+          <v-list-item-subtitle>**********</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
@@ -26,7 +26,7 @@
               <v-card>
                 <v-card-title class="black--text">
                   <v-list-item-avatar tile right size="62">
-                    <img src="../assets/toothbook-logo5.png" />
+                    <img src="../assets/toothbook-logo5.png">
                   </v-list-item-avatar>
                   <span class="headline">Admin Account</span>
                 </v-card-title>
@@ -43,13 +43,25 @@
                         required
                       ></v-text-field>
                       <v-text-field
-                        v-model="password"
+                        :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="inputRules"
+                        :type="show3 ? 'text' : 'password'"
+                        v-model="password"
                         outlined
                         dense
                         label="Password"
                         required
+                        @click:append="show3 = !show3"
                       ></v-text-field>
+                      <!-- <v-text-field
+                        v-model="password"
+                        :rules="inputRules"
+                        outlined
+                        dense
+                        type="password"
+                        label="Password"
+                        required
+                      ></v-text-field> -->
                     </v-form>
                   </v-container>
                 </v-card-text>
@@ -86,7 +98,7 @@
               <v-card>
                 <v-card-title class="black--text">
                   <v-list-item-avatar tile right size="62">
-                    <img src="../assets/toothbook-logo5.png" />
+                    <img src="../assets/toothbook-logo5.png">
                   </v-list-item-avatar>
                   <span class="headline">Total Working Minutes</span>
                 </v-card-title>
@@ -109,12 +121,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="dialog2 = false">Cancel</v-btn>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    :disabled="!valid"
-                    @click="alertUpdateTime"
-                  >Save</v-btn>
+                  <v-btn color="blue darken-1" text :disabled="!valid" @click="alertUpdateTime">Save</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -138,6 +145,7 @@ export default {
   name: "accountSettings",
   data() {
     return {
+      show3:false,
       username: "",
       password: "",
       hours: 0,
@@ -151,7 +159,7 @@ export default {
       lazy2: false,
       valid: false,
       inputRules: [v => !!v || "Input is required"],
-      id: 0,
+      id: 0
     };
   },
   methods: {
@@ -163,7 +171,7 @@ export default {
       updateAccount(data, this.id)
         .then(data => {
           this.$emit("updateAccount", data.data);
-          this.dialog1= false
+          this.dialog1 = false;
           this.username = data.data[0].username;
           this.password = data.data[0].password;
         })
@@ -177,7 +185,7 @@ export default {
       updateHours(data)
         .then(data => {
           this.$emit("updateHours", data.data);
-          console.log(data.data)
+          console.log(data.data);
           this.dialog2 = false;
         })
         .catch(err => alert(err.error));
@@ -244,7 +252,7 @@ export default {
       });
     }
   },
-  
+
   mounted() {
     getHours()
       .then(data => (this.hours = this.data = data.data[0].totalHours))

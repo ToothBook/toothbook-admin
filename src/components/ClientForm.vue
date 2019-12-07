@@ -1,95 +1,124 @@
 <template>
-<v-row justify="center">
+  <v-row justify="center">
     <v-dialog v-model="dialog2" persistent max-width="1000px">
-        <template v-slot:activator="{ on }">
-            <v-btn color="light-blue accent-4" class="mt-7" dark v-on="on">Book Schedule Now!</v-btn>
-        </template>
-        <v-card width="100%" class="px-1 pb-10" elevation="5">
-            <v-card-title>
-                <v-avatar tile size="62">
-                    <img src="../assets/totii.png" alt="Vuetify.js" height="500">
-                </v-avatar>
-                <span class="headline">Please provide the following:</span>
-            </v-card-title>
-            <v-card-text>
-                <v-container class="scrollbar" id="style-3">
-                    <v-form class="force-overflow" dark ref="form" v-model="valid" :lazy-validation="lazy">
-                        <v-select v-model="selectService" :items="services" item-text="name" :rules="[v => !!v || 'Item is required']" label="Dental Services" sort-by="name" @change="disable = false, modal= true" required></v-select>
-                        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field v-model="date" :rules="[v => !!v || 'Date is required']" label="When" readonly v-on="on" :disabled="disable"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="modal = false, cancelDate">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                        </v-dialog>
-                        <h3 class="mb-2">Personal Information</h3>
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-text-field v-model="firstname" :rules="nameRules" label="First name" required></v-text-field>
-                            </v-col>
+      <template v-slot:activator="{ on }">
+        <v-btn color="light-blue accent-4" class="mt-7" dark v-on="on">Book Schedule Now!</v-btn>
+      </template>
+      <v-card width="100%" class="px-1 pb-10" elevation="5">
+        <v-card-title>
+          <v-avatar tile size="62">
+            <img src="../assets/totii.png" alt="Vuetify.js" height="500">
+          </v-avatar>
+          <span class="headline">Please provide the following:</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container class="scrollbar" id="style-3">
+            <v-form class="force-overflow" dark ref="form" v-model="valid" :lazy-validation="lazy">
+              <v-select
+                v-model="selectService"
+                :items="services"
+                item-text="name"
+                :rules="[v => !!v || 'Item is required']"
+                label="Dental Services"
+                sort-by="name"
+                @change="disable = false, modal= true"
+                required
+              ></v-select>
+              <v-dialog
+                ref="dialog"
+                v-model="modal"
+                :return-value.sync="date"
+                persistent
+                width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="date"
+                    :rules="[v => !!v || 'Date is required']"
+                    label="When"
+                    readonly
+                    v-on="on"
+                    :disabled="disable"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="date" scrollable :min="currentDate" @change="selectDate">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal = false, cancelDate">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                </v-date-picker>
+              </v-dialog>
+              <h3 class="mb-2">Personal Information</h3>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field v-model="firstname" :rules="nameRules" label="First name" required></v-text-field>
+                </v-col>
 
-                            <v-col cols="12" md="6">
-                                <v-text-field v-model="lastname" :rules="nameRules" label="Last name" required></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-                        <v-text-field v-model="contact" :rules="[v => !!v || 'Item is required']" label="Contact Number" required></v-text-field>
-                        <v-textarea v-model="note" outlined name="input-7-4" label="Notes" value></v-textarea>
-                        <v-spacer></v-spacer>
-                        <v-checkbox v-model="checkbox" :rules="[v => !!v || 'You must agree to continue!']" label="Do you agree?" required>
-                            <template v-slot:label>
-                                <div @click.stop="false">
-                                    Do you accept the
-                                    <a href="javascript:;" @click.stop="terms = true">terms</a>
-                                    and
-                                    <a href="javascript:;" @click.stop="conditions = true">conditions?</a>
-                                </div>
-                            </template>
-                        </v-checkbox>
-                    </v-form>
-                </v-container>
-            </v-card-text>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text class="ml-5" @click="dialog2 = false, cancel()">Cancel</v-btn>
-            <v-btn :disabled="!valid" color="primary" class="ml-5" text @click="validate, alertSubmit()">Submit</v-btn>
-        </v-card>
+                <v-col cols="12" md="6">
+                  <v-text-field v-model="lastname" :rules="nameRules" label="Last name" required></v-text-field>
+                </v-col>
+              </v-row>
+              <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+              <v-text-field
+                v-model="contact"
+                :rules="[v => !!v || 'Item is required']"
+                label="Contact Number"
+                required
+              ></v-text-field>
+              <v-textarea v-model="note" outlined name="input-7-4" label="Notes" value></v-textarea>
+              <v-spacer></v-spacer>
+              <v-checkbox
+                v-model="checkbox"
+                :rules="[v => !!v || 'You must agree to continue!']"
+                label="Do you agree?"
+                required
+              >
+                <template v-slot:label>
+                  <div @click.stop="false">
+                    Do you accept the
+                    <a href="javascript:;" @click.stop="terms = true">terms</a>
+                    and
+                    <a
+                      href="javascript:;"
+                      @click.stop="conditions = true"
+                    >conditions?</a>
+                  </div>
+                </template>
+              </v-checkbox>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" text class="ml-5" @click="dialog2 = false, cancel()">Cancel</v-btn>
+        <v-btn
+          :disabled="!valid"
+          color="primary"
+          class="ml-5"
+          text
+          @click="validate, alertSubmit()"
+        >Submit</v-btn>
+      </v-card>
     </v-dialog>
     <v-dialog v-model="terms" width="70%">
       <v-card>
         <v-card-title class="title">Terms</v-card-title>
-        <v-card-text v-for="n in 5" :key="n">
-          {{ content }}
-        </v-card-text>
+        <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            text
-            color="light-blue"
-            @click="terms = false"
-          >Ok</v-btn>
+          <v-btn text color="light-blue" @click="terms = false">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="conditions" width="70%">
       <v-card>
         <v-card-title class="title">Conditions</v-card-title>
-        <v-card-text v-for="n in 5" :key="n">
-          {{ content }}
-        </v-card-text>
+        <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            text
-            color="light-blue"
-            @click="conditions = false"
-          >Ok</v-btn>
+          <v-btn text color="light-blue" @click="conditions = false">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-</v-row>
+  </v-row>
 </template>
 
 <script>
@@ -139,7 +168,8 @@ export default {
     disable: true,
     conditions: false,
     terms: false,
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.',
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc."
   }),
   computed: {
     computedDateFormattedMomentjs() {
@@ -148,8 +178,8 @@ export default {
   },
 
   methods: {
-    cancel(){
-        this.$refs.form.reset();
+    cancel() {
+      this.$refs.form.reset();
     },
     selectDate() {
       const list = this.dataHours[0].hoursRequested; //list of date being booked by clients
@@ -245,8 +275,8 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-        }else{
-          this.cancelDate()
+        } else {
+          this.cancelDate();
         }
       });
     },
@@ -254,7 +284,7 @@ export default {
       getHours()
         .then(data => (this.dataHours = data.data))
         .catch(err => console.log(err));
-      this.date = null
+      this.date = null;
     }
   },
   mounted() {
