@@ -53,15 +53,6 @@
                         required
                         @click:append="show3 = !show3"
                       ></v-text-field>
-                      <!-- <v-text-field
-                        v-model="password"
-                        :rules="inputRules"
-                        outlined
-                        dense
-                        type="password"
-                        label="Password"
-                        required
-                      ></v-text-field> -->
                     </v-form>
                   </v-container>
                 </v-card-text>
