@@ -54,7 +54,7 @@
                       <li>Fluoride Treatment</li>
                       <li>Ceramic Braces</li>
                       <li>Dental Implants</li>
-                      <li>and may more..</li>
+                      <li>and many more..</li>
                     </v-card-text>
                   </v-card>
                 </v-flex>

@@ -90,7 +90,7 @@ export default {
             this.alertError()
           }
         })
-        .catch(err => alert(err.error));
+        .catch(() => this.alertError());
     },
     register() {
       let data = {
