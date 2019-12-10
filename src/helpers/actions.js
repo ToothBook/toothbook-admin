@@ -8,6 +8,11 @@ export function getServices() {
         .then(response => response.data)
 }
 
+export function getServiceOne(data) {
+    return axios.post(`${BASE_URL}/api/service/one`, {data})
+        .then(response => response.data)
+}
+
 export function deleteService(id) {
     return axios.post(`${BASE_URL}/api/service/delete/${id}`)
         .then(response => response.data)
@@ -152,4 +157,12 @@ export function getuser(data) {
             return response.data
         })
         .catch(err => Promise.reject(err.message));
+}
+
+export function addTime(data) {
+    return axios.post(`${BASE_URL}/api/time/add`, { data })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => Promise.reject(err.message))
 }

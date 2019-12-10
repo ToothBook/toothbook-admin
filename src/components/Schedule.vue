@@ -7,6 +7,9 @@
   >
     <template v-slot:top>
       <v-toolbar flat color="white" class="ma-4 mb-12 pa-5">
+        <v-avatar tile right class="mr-2" size="62">
+          <img src="../assets/toothbook-logo5.png">
+        </v-avatar>
         <v-toolbar-title class="display-1">MANAGE DENTAL SERVICES</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>

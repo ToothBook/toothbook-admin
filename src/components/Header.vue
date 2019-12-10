@@ -12,7 +12,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item @click="alertLogout()">
+          <v-list-item @click="logout()">
             <v-icon>mdi-logout</v-icon>
             <v-list-item-title>logout</v-list-item-title>
           </v-list-item>

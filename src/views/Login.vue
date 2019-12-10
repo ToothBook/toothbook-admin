@@ -1,25 +1,18 @@
 <template>
-  <v-app id="back">
-    <v-container class="fill-height ml-12" fluid>
-      <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md7 lg5>
-          <v-card class="mx-auto text-center pa-5" max-width="500px" shaped raised>
-            <v-avatar tile size="62">
-              <img src="../assets/totii.png" alt="Vuetify.js" height="500">
-            </v-avatar>
-            <h2 class="text-center">Admin Login</h2>
-            <v-card-text>
-              <v-form>
-                <v-text-field
-                  v-model="username"
-                  label="Login"
-                  name="username"
-                  prepend-icon="mdi-account"
-                  color="light-blue accent-4"
-                  clearable
-                  type="text"
-                />
-                <v-text-field
+<v-app id="back">
+    <v-container class="fill-height" fluid>
+        <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md7 lg5>
+                <v-card class="mx-auto text-center pa-5" max-width="500px" shaped raised>
+                    <v-avatar tile size="62">
+                        <img src="../assets/totii.png" alt="Vuetify.js" height="500">
+                    </v-avatar>
+                    <h2 class="text-center">Admin Login</h2>
+                    <v-card-text>
+                        <v-form ref="form" v-model="valid" :lazy-validation="lazy">
+                            <v-text-field v-model="username" :rules="inputRules" outlined label="Login" name="username" prepend-icon="mdi-account" color="light-blue accent-4" clearable type="text" />
+                            <v-text-field :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :rules="inputRules" :type="show3 ? 'text' : 'password'" v-model="password" id="password"  name="password" color="light-blue accent-4" prepend-icon="mdi-lock" outlined  label="Password" required @click:append="show3 = !show3"></v-text-field>
+                            <!-- <v-text-field
                   v-model="password"
                   id="password"
                   label="Password"
@@ -28,33 +21,19 @@
                   color="light-blue accent-4"
                   prepend-icon="mdi-lock"
                   type="password"
-                />
-              </v-form>
-            </v-card-text>
-            <v-spacer/>
-            <v-card-actions class="justify-center">
-              <v-btn
-                class="px-10"
-                text
-                @click="register()"
-                text-center
-                v-if="!disable"
-                color="light-blue accent-4"
-              >register</v-btn>
-              <v-btn
-                v-if="!loginbtn"
-                class="px-10"
-                dark
-                v-on:click="login()"
-                text-center
-                color="light-blue accent-3"
-              >Login</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
+                /> -->
+                        </v-form>
+                    </v-card-text>
+                    <v-spacer />
+                    <v-card-actions class="justify-center">
+                        <v-btn class="px-10" text @click="register()" text-center v-if="!disable" color="light-blue accent-4">register</v-btn>
+                        <v-btn v-if="!loginbtn" class="px-10" dark v-on:click="login()" text-center color="light-blue accent-3">Login</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-layout>
     </v-container>
-  </v-app>
+</v-app>
 </template>
 
 <script>
@@ -65,11 +44,15 @@ export default {
   name: "btnLogin",
   data() {
     return {
+      show3: false,
       username: "",
       password: "",
       data: false,
       disable: false,
-      loginbtn: true
+      loginbtn: true,
+      valid: true,
+      lazy: false,
+      inputRules: [v => !!v || "Input is required"]
     };
   },
   methods: {
@@ -87,10 +70,14 @@ export default {
               name: "Dashboard"
             });
           } else {
-            this.alertError()
+            this.alertError("Invalid username or password!");
           }
         })
-        .catch(() => this.alertError());
+        .catch(
+          err => (
+            this.alertError("Invalid username or password!"), console.log(err)
+          )
+        );
     },
     register() {
       let data = {
@@ -109,13 +96,13 @@ export default {
         .catch(err => alert(err.error));
     },
 
-    alertError() {
+    alertError(text) {
       Swal.fire({
         type: "error",
         title: "Oops...",
-        text: "Invalid username or password!"
+        text: text
       });
-    },
+    }
   },
   mounted() {
     getAccount()
